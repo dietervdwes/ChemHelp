@@ -1,9 +1,7 @@
 # ChemHelp
-AutoHotKey based script to help signing of blood results in Chemical Pathology on TrakCare LIS.
-Designed for use at Groote Schuur Hospital Chemical Pathology.
-Most functions can be adapted to work at other laboratories with their respective file servers.
+ChemHelp is an AutoHotKey based script to help signing of blood results in Chemical Pathology on the TrakCare LIS.
 
-Introduction
+# Introduction
 Written by Dieter van der Westhuizen, 2018 - current
 Inspired by Chad Centner - TrakHelper, 2015-2018.
 
@@ -61,6 +59,13 @@ FPSA button on ChemHelp to add a Free PSA to the current episode.
 
 Login button: Runs the login script 
 The source code can be seen by right-clicking on ChemHelp and opening with a Text editor.  Please don't change on the S-drive unless discussed.  Of course you can customize your own version, should you wish, after copying the file (not the shortcut) to your PC.
+# Known Errors / Improvements to be made
+
+ChemHelp was originally developed for use at Groote Schuur Hospital Chemical Pathology, but most functions should also be useable by other laboratories within the NHLS.
+Most functions, eg. the Form button (or Ctrl + F), can be adapted to work at other laboratories with their respective file- / pdf servers.
+The ECM and interaction with it has not yet been configured, as we do not use the ECM server in the Western Cape.
+I am however keen to visit another lab (or have an ECHO session) to learn how this works and try to implement it to work on this system as well.
+
 
 # Feedback
 Please remember to give feedback as an error can be resolved and may only lead to improvement: dieter.vdwesthuizen@nhls.ac.za 
