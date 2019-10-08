@@ -14,12 +14,13 @@ If you want to edit the script for use in your lab, then you will need an applic
 
 2.	Copy "ChemHelp.ahk" to local desktop or other convenient location on the local workstation
 
-3.	Copy the contents of "Copy_contents_to_My_Documents" to your My Documents folder and replace the contents of each text file with your login details.  
-It is important that the contents (i.e. individual files and not the folder), be copied, to your "Documents" root folder.
+3.	(Optional when wanting to use the Login button) 
+Copy the contents of "Copy_contents_to_My_Documents" to your My Documents folder and replace the contents of each text file with your login details.  Also replace the "tabs_citrix.txt" contents with the amount of {TAB} buttons it takes to navigate to the blue TrakCare icon after having logged into Citrix. (This is usually around 16-20 tabs, depending on how many bookmarks etc. you have and you will need to test this after manually logging into Citrix and counting how many times you need to press tab until the blue TrakCare icon highlights.  Save this number in the "tabs_citrix.txt" file in your Documents folder.
+It is important that the contents (i.e. individual files and NOT the folder), be copied, to your "Documents" root folder.
 
 4.	Double click "ChemHelp" which you’ve copied to your Desktop to launch ChemHelp.
 
-5.	Although editing of the script in Notepad is possible, the following editor is recommended: Scite4AutoHotkey, downloadable from: http://fincs.ahk4.net/scite4ahk/.
+5.	(Optional) Although editing of the script in Notepad is possible, the following editor is recommended: Scite4AutoHotkey, downloadable from: http://fincs.ahk4.net/scite4ahk/.
 
 
 When ChemHelp window is running, the following shortcuts are active:
