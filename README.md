@@ -67,6 +67,8 @@ Most functions, eg. the Form button (or Ctrl + F), can be adapted to work at oth
 The ECM and interaction with it has not yet been configured, as we do not use the ECM server in the Western Cape.
 I am however keen to visit another lab (or have an ECHO session) to learn how this works and try to implement it to work on this system as well.
 
+ChemHelp-Chrome.ahk was a work in progress to open the scanned forms as well as the EPR in Chrome browser rather than the default Internet Explorer.  I am not working on this now anymore, as Internet Explorer seems to be working fine.
+
 
 # Feedback
 Please remember to give feedback as an error can be resolved and may only lead to improvement: dieter.vdwesthuizen@nhls.ac.za 
