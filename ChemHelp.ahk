@@ -985,15 +985,19 @@ Newline preserved in this way
 ::STN::Stable negative bias.
 ::STP::Stable positive bias.
 ::CTM::Close to mean.  Stable.
-::D1::Dr. Dieter van der Westhuizen
-::R1::Dr. Ronald Dalmacio
-::C1::Dr. Careen Hudson
-::H.::Dr. Heleen Vreede
-::J1::Dr. Jody Rusch
-::J2::Dr. Justine Cole
-::JL::Dr. Jarryd Lunn
-;::RA::Dr. Razia Banderker
-::TH::Dr. Thando Gcingca
+
+;If you have a long name like me, you can enter a shortcode like below, without the preceeding ";".  
+;Type "d1" then space or tab and the text as coded will be typed automatically.
+
+;::D1::Dr. Dieter van der Westhuizen
+;::R1::Dr. Ronald Dalmacio
+;::C1::Dr. Careen Hudson
+;::H.::Dr. Heleen Vreede
+;::J1::Dr. Jody Rusch
+;::J2::Dr. Justine Cole
+;::JL::Dr. Jarryd Lunn
+;;::RA::Dr. Razia Banderker
+;::TH::Dr. Thando Gcingca
 
 #IfWinNotActive
 
