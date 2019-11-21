@@ -65,7 +65,7 @@ The source code can be seen by right-clicking on ChemHelp and opening with a Tex
 # Mouse Scroll Wheel
 Mouse scroll wheel has been setup to work in some windows.
 
-# Hotstrings for reporting protein-electrophoreses
+# Hotstrings for reporting protein electrophoreses
 Note that this list can be edited by editing ChemHelp.ahk with a text editor and entering your own text in a similar format.  To learn how to edit these click here: https://www.autohotkey.com/docs/Hotstrings.htm
 
 `::INFLAM::The alpha-1, -2 and beta-2 (complement) regions are elevated and there is a polyclonal hypergammaglobulinaemia at  g/L (8 - 14 g/L). No monoclonal peaks are visible. This pattern suggests an inflammatory process.  If the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended.
