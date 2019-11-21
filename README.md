@@ -62,6 +62,7 @@ Login button: Runs the login script
 
 The source code can be seen by right-clicking on ChemHelp and opening with a Text editor.  Of course you can customize your own version, should you wish, after copying the file to your PC.
 
+# Mouse Scroll Wheel
 Mouse scroll wheel has been setup to work in some windows.
 
 # Hotstrings for reporting protein-electrophoreses
