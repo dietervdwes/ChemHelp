@@ -294,7 +294,7 @@ send, {CtrlDown}v{CtrlUp}
 sleep, 300
 send, {Enter}
 sleep, 300
-MouseClick, Left, 340, 107, 2, 100
+MouseClick, Left, 340, 133, 2, 100
 sleep, 100
 Send, PHONC
 sleep, 100
