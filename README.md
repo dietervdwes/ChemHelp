@@ -50,16 +50,21 @@ Alt + N: Copy Episode Number to the clipboard.
 
 Alt + E (or “Episode” button on the app window): Opens a new text box to enter an Episode number to open up the scanned form on Equation document viewer.
 
-Alt + P: From within “Medical Validation”, copies the episode number and navigates to Result Entry window to enter or add the PHONC.  This is also useful to enter to “Result Entry” window from within “Medical Validation”
+Alt + P: From within “Medical Validation”, copies the episode number and navigates to Result Entry window to enter or add the PHONC.  This is also useful to easily navigate to “Result Entry” window from within “Medical Validation”, even when a PHONC is not due for entry.
 
 Alt + F4: Closes any active window.  
 
-Alt + Tab: Switches active windows.  (Latter two shortcuts are universal on Windows computers.)
+Alt + Tab: Switches active windows.
 
 FPSA button on ChemHelp to add a Free PSA to the current episode.
 
 Login button: Runs the login script 
-The source code can be seen by right-clicking on ChemHelp and opening with a Text editor.  Please don't change on the S-drive unless discussed.  Of course you can customize your own version, should you wish, after copying the file (not the shortcut) to your PC.
+
+The source code can be seen by right-clicking on ChemHelp and opening with a Text editor.  Of course you can customize your own version, should you wish, after copying the file to your PC.
+
+Mouse scroll wheel has been setup to work in some windows.
+
+
 # Known Errors / Improvements to be made
 
 ChemHelp was originally developed for use at Groote Schuur Hospital Chemical Pathology, but most functions should also be useable by other laboratories within the NHLS.
