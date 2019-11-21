@@ -2,7 +2,7 @@
 ChemHelp is an AutoHotKey based script to help signing of blood results in Chemical Pathology on the TrakCare LIS.
 
 # Introduction
-Written by Dieter van der Westhuizen, 2018 - current
+Written by Dieter van der Westhuizen, 2018 - current; 
 Inspired by Chad Centner - TrakHelper, 2015-2018.
 
 ChemHelp was developed to assist reviewers in Chemical Pathology to eliminate unnecessary mouse use and clicking by automating some of the tasks while using TrakCare for reviewing blood results.
