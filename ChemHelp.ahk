@@ -1,4 +1,4 @@
-;ChemHelp v.1.6 - updated 20-09-2019
+;ChemHelp v.1.7 - updated 07-02-2020
 ;Written by Dieter van der Westhuizen 2018-2019
 ;Inspired from TrakHelper by Chad Centner
 
@@ -31,7 +31,7 @@ Gui, Add, button, x45 y152 w20 h20 ,_i
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;   Set Window Options   ;;;;;;;;;;;;;;
 ;Gui, +AlwaysOnTop
 Gui, -sysmenu +AlwaysOnTop
-Gui, Show, , ChemHelp1.6
+Gui, Show, , ChemHelp1.7
 WinGetPos,,,,TrayHeight,ahk_class Shell_TrayWnd,,,
 height := A_ScreenHeight-270
 width := A_ScreenWidth-85
@@ -460,13 +460,14 @@ sleep, 200
 !v::
 IfWinActive, Medical Validation :   (Authorise By Episode)
 {
-WinActivate, Medical Validation :   (Authorise By Episode)
+;WinActivate, Medical Validation :   (Authorise By Episode)
 WinWaitActive, Medical Validation :   (Authorise By Episode)
-sleep, 200
+sleep, 100
 send, {altdown}d{altup}
-sleep, 200
+sleep, 100
 send, f
-sleep, 200
+WinWaitActive, Staff Notes
+sleep, 100
 send, Transcription Verified.
 sleep, 100
 send, {alt down}o{alt up}
@@ -1105,4 +1106,5 @@ Return
 ^!r::Reload  ; Assign Ctrl-Alt-R as a hotkey to restart the script.
 
     
+
 
