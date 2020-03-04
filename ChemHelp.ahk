@@ -1,4 +1,4 @@
-;ChemHelp v.1.7 - updated 07-02-2020
+;ChemHelp v.1.7 - updated 04-03-2020
 ;Written by Dieter van der Westhuizen 2018-2019
 ;Inspired from TrakHelper by Chad Centner
 
