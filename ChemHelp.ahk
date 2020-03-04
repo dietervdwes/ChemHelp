@@ -345,6 +345,173 @@ send, {AltDown}e{AltUp}
 return
 #IfWinActive
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;                                            Ctrl+Alt+P Enter CCOM with Dr. update links
+#IfWinActive, Medical Validation :   (Authorise By Episode)
+^!p::
+EpMedVal()
+sleep, 100
+WinActivate Medical Validation :   (Authorise By Episode)
+sleep, 200
+   send, {altdown}<{altup}
+sleep, 200
+
+IfWinNotExist, Result Entry, , Result Entry - Verify 
+{
+	IfWinNotActive,  NHLS,
+    WinActivate,  NHLS, 
+	WinWaitActive,  NHLS, 
+	Sleep, 100
+	Send, a{TAB}
+	Send, Result Entry{Enter}
+	WinWaitActive, Result Entry  
+    sleep, 200
+}
+WinActivate, Result Entry, , Result Entry - Verify 
+WinWaitActive, Result Entry, , Result Entry - Verifiy
+sleep, 100
+IfWinExist, Search Unsuccessful
+{
+    WinClose, Search Unsuccessful
+    sleep, 200
+}
+WinActivate, Result Entry, , Result Entry - Verify 
+WinWaitActive, Result Entry, , Result Entry - Verifiy
+sleep, 150
+send, {AltDown}l{AltUp}
+sleep, 150
+send, {CtrlDown}v{CtrlUp}
+sleep, 200
+send, {Enter}
+sleep, 200
+/*
+MouseClick, Left, 340, 133, 2, 100
+sleep, 100
+Send, CCOM
+sleep, 100
+send, {Enter}
+sleep, 250
+IfWinExist, Search Unsuccessful
+{
+    MsgBox, 4,,  CCOM does not appear for this Episode. `nDo you want to add a CCOM to this episode?
+    IfMsgBox Yes
+    {
+        WinClose, Search Unsuccessful
+        sleep, 200
+        WinActivate, Result Entry, , Result Entry - Verify 
+        WinWaitActive, Result Entry, , Result Entry - Verify
+        sleep, 200
+        send, {AltDown}l{AltUp}
+        sleep, 400
+        send, {CtrlDown}v{CtrlUp}
+        sleep, 300
+        send, {Enter}
+        sleep, 300
+        MouseClick, Left, 215, 300
+        sleep, 200
+        send, {altdown}d{altup}
+        sleep, 200
+        send, s
+        sleep, 200
+        WinWaitActive, Test Set Maintenance
+        sleep, 200
+        send, CCOM
+        sleep, 200
+        send, {tab}
+        sleep, 100
+        send, {enter}
+        return
+    }
+    else IfMsgBox No
+    { 
+        sleep, 300
+        WinClose, Search Unsuccessful
+        Return 
+    }
+}
+else
+*/
+MouseClick, left, 70, 300, 1
+sleep, 200
+send, {altdown}d{altup}
+sleep, 200
+send, s
+sleep, 200
+WinWaitActive, Test Set Maintenance
+sleep, 500
+send, CCOM
+sleep, 500
+send, {tab}
+sleep, 300
+send, {enter}
+sleep, 300
+WinClose, Test Set Maintenance
+WinWaitClose, Test Set Maintenance
+sleep, 500
+
+MouseClick, Left, 340, 133, 2, 100
+sleep, 100
+Send, CCOM
+sleep, 100
+send, {Enter}
+sleep, 250
+
+IfWinExist, Search Unsuccessful
+{
+    MsgBox, 4,,  CCOM does not appear for this Episode. `nDo you want to add a CCOM to this episode?
+    IfMsgBox Yes
+    {
+        WinClose, Search Unsuccessful
+        sleep, 200
+        WinActivate, Result Entry, , Result Entry - Verify 
+        WinWaitActive, Result Entry, , Result Entry - Verify
+        sleep, 200
+        send, {AltDown}l{AltUp}
+        sleep, 400
+        send, {CtrlDown}v{CtrlUp}
+        sleep, 300
+        send, {Enter}
+        sleep, 300
+        MouseClick, Left, 215, 300
+        sleep, 200
+        send, {altdown}d{altup}
+        sleep, 200
+        send, s
+        sleep, 200
+        WinWaitActive, Test Set Maintenance
+        sleep, 200
+        send, CCOM
+        sleep, 200
+        send, {tab}
+        sleep, 100
+        send, {enter}
+        return
+    }
+    else IfMsgBox No
+    { 
+        sleep, 300
+        WinClose, Search Unsuccessful
+        Return 
+    }
+}
+else
+
+MouseClick, Left, 400, 300, 1
+sleep, 200
+send, {AltDown}e{AltUp}
+WinWaitActive, Result Entry - Single - 
+sleep, 100
+send, {F6}
+WinWaitActive, Comments
+sleep, 50
+send, Clinician contact details may not be coded in our database.  Please follow the link below to update clinician contact details:`ntinyurl.com/nhls-update       ;<<-----Put link in here after the "`n"
+sleep, 2000
+WinClose, Comments
+sleep, 100
+send, {AltDown}a{AltUp}
+
+return
+
+#IfWinActive
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;                                 ALT+W for EPR      ALT+W for EPR   ALT+W for EPR      ALT+W for EPR  
 
@@ -797,25 +964,25 @@ EpMedVal()
 {
 WinActivate, Medical Validation :   (Authorise By Episode)
 WinWaitActive, Medical Validation :   (Authorise By Episode)
-sleep, 500
+sleep, 250
 send, {altdown}i{altup}
 sleep, 200
 send, c
-sleep, 250
+sleep, 100
 WinActivate, Clinical History
 WinWaitactive, Clinical History
-sleep, 300
-mouseclick, left, 122, 75, 2, 100
+sleep, 100
+MouseClick, left, 122, 75, 2, 100
 ClipSaved := clipboardall
 clipboard=
 sleep, 100
 send, ^c
 ClipWait
-sleep, 200
-txt := Clipboard
-sleep, 200
-WinClose, Clinical History
 sleep, 100
+txt := Clipboard
+sleep, 250
+WinClose, Clinical History
+sleep, 250
 Return
 }
 
@@ -823,7 +990,7 @@ EpResultSingle()
 {
   WinActivate, Result Entry - Single -
 WinWaitActive, Result Entry - Single -
-sleep, 400
+sleep, 250
 send, {altdown}3{altup}
 sleep, 200
 send, c
@@ -990,7 +1157,7 @@ Newline preserved in this way
 ;If you have a long name like me, you can enter a shortcode like below, without the preceeding ";".  
 ;Type "d1" then space or tab and the text as coded will be typed automatically.
 
-;::D1::Dr. Dieter van der Westhuizen
+::D1::Dr. Dieter van der Westhuizen
 ;::R1::Dr. Ronald Dalmacio
 ;::C1::Dr. Careen Hudson
 ;::H.::Dr. Heleen Vreede
@@ -1106,5 +1273,4 @@ Return
 ^!r::Reload  ; Assign Ctrl-Alt-R as a hotkey to restart the script.
 
     
-
 
