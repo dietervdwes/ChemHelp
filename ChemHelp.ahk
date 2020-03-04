@@ -478,9 +478,9 @@ IfWinExist, Search Unsuccessful
         send, s
         sleep, 200
         WinWaitActive, Test Set Maintenance
-        sleep, 200
+        sleep, 150
         send, CCOM
-        sleep, 200
+        sleep, 150
         send, {tab}
         sleep, 100
         send, {enter}
@@ -496,7 +496,7 @@ IfWinExist, Search Unsuccessful
 else
 
 MouseClick, Left, 400, 300, 1
-sleep, 200
+sleep, 150
 send, {AltDown}e{AltUp}
 WinWaitActive, Result Entry - Single - 
 sleep, 100
@@ -504,10 +504,16 @@ send, {F6}
 WinWaitActive, Comments
 sleep, 50
 send, Clinician contact details may not be coded in our database.  Please follow the link below to update clinician contact details:`ntinyurl.com/nhls-update       ;<<-----Put link in here after the "`n"
-sleep, 2000
+sleep, 1800
 WinClose, Comments
 sleep, 100
 send, {AltDown}a{AltUp}
+sleep, 200
+send {AltDown}{Tab}{AltUp}
+sleep, 100
+WinWaitActive, Medical Validation
+sleep, 200
+send, {AltDown}>{AltUp}
 
 return
 
