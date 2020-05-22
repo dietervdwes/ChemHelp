@@ -1,11 +1,12 @@
-;ChemHelp v.1.7 - updated 04-03-2020
+;ChemHelp v.1.8 - updated 16-05-2020
 ;Written by Dieter van der Westhuizen 2018-2019
 ;Inspired from TrakHelper by Chad Centner
 
 #SingleInstance, force
-#NoTrayIcon
+;#NoTrayIcon
 #NoEnv
 ;#Persistent
+#MaxThreadsPerHotkey 2
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 SetKeyDelay, 85
 SendMode, Input
@@ -22,7 +23,7 @@ Gui, Add, button, x2 y42 w28 h20  ,EPR
 Gui, Add, button, x2 y64 w33 h20  ,FPSA
 Gui, Add, button, x2 y86 w45 h20  ,Verified
 Gui, Add, button, x2 y108 w57 h20  ,KeepOpen
-;Gui, Add, button, w57 , VolVeri
+Gui, Add, button, x60 y108 w20 h20  ,Ex
 Gui, Add, button, x2 y130 w45 h20  ,More
 Gui, Add, button, x2 y152 w32 h20 ,Close
 Gui, Add, button, x45 y152 w20 h20 ,_i
@@ -31,7 +32,7 @@ Gui, Add, button, x45 y152 w20 h20 ,_i
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;   Set Window Options   ;;;;;;;;;;;;;;
 ;Gui, +AlwaysOnTop
 Gui, -sysmenu +AlwaysOnTop
-Gui, Show, , ChemHelp1.7
+Gui, Show, , ChemHelp1.8
 WinGetPos,,,,TrayHeight,ahk_class Shell_TrayWnd,,,
 height := A_ScreenHeight-270
 width := A_ScreenWidth-85
@@ -190,23 +191,6 @@ WinWaitActive, LabTrakStart
 else
 return
 
-/*
-;;;;;;;;;;;;;;;;;;;;;;;                                                                         Episode button to open scanned form ; also works with Alt+E. 
-#IfWinNotActive, Result Entry
-!e::
-#IfWinNotActive, 
-ButtonEpisode:
-InputBox, episodenumber, Episode, -sysmenu, , 100, 100, A_ScreenWidth-210 , A_ScreenHeight-275,
-if ErrorLevel
-   Return
-else
-url := "http://172.22.4.40/multipdfsearch.php?file=" . episodenumber
-run, %url%
-sleep, 1500
-WinMove, Internet Explorer ahk_class IEFrame,, A_ScreenWidth-537, 0, 545, A_ScreenHeight-25
-Return
-*/
-
 ;;;;;;;;;;;;;;;;;;;;;                                                                           CREF error C900 entered but test is registered on TrakCare   
 !y::
 EpResultSingle()
@@ -217,14 +201,15 @@ return
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;                                                                         Button KeepOpen  
 ButtonKeepOpen:
 MsgBox, This script clicks the refresh button on "Results Entry - Verify" window every 10 minutes to keep TrakCare open.`nPlease make sure that "Results Entry - Verify" window is open when you leave your computer.`nClick OK to start.`nHit Esc when you are back on your computer.
+sleep, 300
 SetTimer, refreshtimer, 600000 ;every 10 minutes
 ;SetTimer, refreshtimer, 300000 ;every 5 minutes
-;SetTimer, refreshtimer, 10000 ;every 10 sec
+;SetTimer, refreshtimer, 5000 ;every 10 sec
 Return
 
 ;This is the script to click refresh on Lab Results verify window. 
 refreshtimer:
-IfWinExist, Result Entry - Verify ahk_class Transparent Windows Client 
+if WinExist("Result Entry - Verify ahk_class Transparent Windows Client")  
 {
   WinActivate, Result Entry - Verify ahk_class Transparent Windows Client
   WinWaitActive, Result Entry - Verify ahk_class Transparent Windows Client
@@ -238,22 +223,39 @@ IfWinExist, Result Entry - Verify ahk_class Transparent Windows Client
   sleep, 1000
   return
 }
+else if WinExist(" NHLS")
+{
+    If !WinActive(" NHLS")
+    WinActivate,  NHLS 
+    WinWaitActive,  NHLS 
+    Sleep, 50
+    send, {Alt}
+    sleep, 50
+    Send, v
+    sleep, 50
+    send, u
+    WinWaitActive, User Audit Trail
+    sleep, 100
+    send, {Enter}
+    sleep, 100
+    WinMinimize,  NHLS
+}
 return
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;                                           Alt+N Shortcut to copy Episode 
 !n::
-IfWinActive, Medical Validation :   (Authorise By Episode)
-{
-EpMedVal()
-Return
-}
+if WinActive("Medical Validation :   (Authorise By Episode)")
+    {
+    EpMedVal()
+    Return
+    }
 else
-    IfWinActive, Result Entry - Single -
+    if WinActive("Result Entry - Single -")
     {
     EpResultSingle()
     Return
-}
+    }
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;                                            Alt+P Enter PHONC
@@ -266,9 +268,9 @@ sleep, 200
    send, {altdown}<{altup}
 sleep, 200
 
-IfWinNotExist, Result Entry, , Result Entry - Verify 
+if !WinExist("Result Entry, , Result Entry - Verify")
 {
-	IfWinNotActive,  NHLS,
+	If !WinActive(" NHLS,")
     WinActivate,  NHLS, 
 	WinWaitActive,  NHLS, 
 	Sleep, 100
@@ -280,7 +282,7 @@ IfWinNotExist, Result Entry, , Result Entry - Verify
 WinActivate, Result Entry, , Result Entry - Verify 
 WinWaitActive, Result Entry, , Result Entry - Verifiy
 sleep, 100
-IfWinExist, Search Unsuccessful
+if WinExist("Search Unsuccessful")
 {
     WinClose, Search Unsuccessful
     sleep, 200
@@ -300,7 +302,7 @@ Send, PHONC
 sleep, 100
 send, {Enter}
 sleep, 400
-IfWinExist, Search Unsuccessful
+if WinExist("Search Unsuccessful")
 {
     MsgBox, 4,,  PHONC does not appear for this Episode. `nDo you want to add a PHONC to this episode?
     IfMsgBox Yes
@@ -508,9 +510,8 @@ sleep, 1800
 WinClose, Comments
 sleep, 100
 send, {AltDown}a{AltUp}
-sleep, 200
-send {AltDown}{Tab}{AltUp}
-sleep, 100
+sleep, 800
+WinActivate, Medical Validation :   (Authorise By Episode)
 WinWaitActive, Medical Validation
 sleep, 200
 send, {AltDown}>{AltUp}
@@ -832,6 +833,7 @@ mouseclick, left, 547 , 65, 1
 Return
 #IfWinActive
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;       RIGHT CLICK ALT MENU: cobbled together somehow, by Samuel Murray - 26 May 2018, edited by Dieter (18/09/2019)
 ;;;;;; for testing: Episode Number: SA01912457
 
@@ -1135,6 +1137,171 @@ WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHe
 Return
 }
 
+
+;;;;;;;;;;;;;;;;;;;;; Script to Loop Extraction by pre-defined Extracting Criteria with a pre-formatted configuration CSV.
+#IfWinActive, Monthly Statistics (Not Responding) - \\Remote
+!e::
+settimer, extraction_watch, 10000
+#IfWinActive
+
+extraction_watch:
+if WinExist("Monthly Statistics (Not Responding) - \\Remote")
+{
+    ToolTip, Waiting for Monthly Statistics Window to finish extraction
+    sleep, 500
+    ToolTip
+    Return
+}
+
+if !WinExist("Monthly Statistics (Not Responding) - \\Remote")
+{
+    Extract()
+    return
+}
+Return
+
+ButtonEx:
+Extract()
+Return
+
+Extract()    {
+FileAppend, time_started`,begin_date`,end_date`,loc_prov`,test_set_test_item`,email`,non_reportable`,sort_direction`n, extract_list.txt    
+settimer, extraction_watch, Off
+settimer, refreshtimer, Off
+Loop, read, extract_list.csv, ;output_list.txt ; output_list.txt is the file to write to, if necessary
+{
+    LoopNumber := A_Index ;A_Index stores the number of the current look, i.e. in the case of 'loop, read' it will be the line number, as AHK reads files line by line.
+    Looplinecontents := A_LoopReadLine ;This code stores the contents of the current line into the variable "Looplinecontents" or %Looplinecontents%.
+    LineArray := StrSplit(Looplinecontents, ",")
+    ;This portion configures which columns is present in the CSV
+    begin_date := LineArray[1]
+    end_date := LineArray[2]
+    loc_prov := LineArray[3]
+    test_set_test_item := LineArray[4]
+    email := LineArray[5]
+    non_reportable := LineArray[6]
+    sort_direction := LineArray[7]
+  sleep, 2000
+   if !WinExist("Monthly Statistics") ;The exclamation mark before the WinExist specifies the negative of the statement, i.e. if win"doesnot"exist, execute the function below it in curly brackets.
+    {
+        MsgBox, Monthly Statistics Window does not exist.,4 ; Issue here needs to be resolved as sometimes it doesn't see the window, even though it's active.
+        Return
+    }
+
+    if WinExist("Monthly Statistics (Not Responding)")
+    {
+        MsgBox, Monthly Statistics Window is "Not Responding" and likely busy extracting.  `nThe timer will now be set so that it can continue extraction when it starts responding.`nHit Esc to abort this process.
+        while WinExist("Monthly Statistics (Not Responding)") {
+            sleep, 10000
+            ToolTip, Extracting...
+            sleep, 500
+            ToolTip,
+        }
+    }
+  WinActivate, Monthly Statistics - \\Remote
+  WinWaitActive, Monthly Statistics - \\Remote
+  sleep, 2000
+  MouseClick, Left, 18, 87
+  sleep, 500
+  send, results
+  sleep, 500
+  send, {Enter}
+  sleep, 3000
+  WinWaitActive, Report Listing - \\Remote
+  sleep, 3000
+  PixelGetColor, color, 178, 142
+  While !(color = 0xFFFF00)
+        {
+        PixelGetColor, color, 178, 142
+        ToolTip, Color is %color%
+        sleep, 300
+        Tooltip
+        }
+  sleep, 1000
+  send, %begin_date%
+  sleep, 1000
+  send, {Tab}
+  sleep, 500
+  send, %end_date%
+  sleep, 500
+  send, {Tab}
+  sleep, 500
+  send, %loc_prov% ; Location code (province)
+  sleep, 500
+  send, {Down}
+  sleep, 1000
+  loop, 8
+    {
+        send, {Tab}
+        sleep, 200
+    }
+  send, %test_set_test_item%
+  sleep, 500
+  loop, 9
+    {
+        send, {Tab}
+        sleep, 200
+    }
+  send, {Space}
+  sleep, 500
+  send, {Tab}
+  sleep, 500
+  send, %email%
+  sleep, 500
+  send, {Tab}
+  sleep, 500
+  if (non_reportable = 1) {
+    send, {space}
+    sleep, 1000
+    send, {Enter}
+    sleep, 500
+    send, {Tab}
+    }
+  else {
+    send, {Tab}
+       }
+  sleep, 200
+  send, {Tab}
+  sleep, 500
+  if (sort_direction = 1) {
+    send, {Space}
+    sleep, 500
+    send, {Tab}
+    sleep, 500
+    }
+  else {
+    send, {Tab}
+    sleep, 500
+    send, {Space}
+    sleep, 500
+    }
+   sleep, 500
+   /*
+   MsgBox, 4, , Please confirm that the correct parameters are entered. `nThis MsgBox will *auto-destruct* in 007 seconds and continue extracting.  Continue?, 7
+        IfMsgBox No
+            Return
+        else IfMsgBox Timeout
+            sleep, 500
+  */
+  WinActivate, Report Listing
+  WinWaitActive, Report Listing
+  sleep, 800
+  MouseClick, Left, 808, 59 ; Click on "Print" button
+  FileAppend, %A_Now%`,%begin_date%`,%end_date%`,%loc_prov%`,%test_set_test_item%`,%email%`,%non_reportable%`,%sort_direction%`n, extract_list.txt
+  sleep, 10000
+  settimer, refreshtimer, 600000 ; This is to keep TrakCare open
+  While WinExist("Monthly Statistics (Not Responding)")
+  {
+    Sleep, 5000
+    ToolTip, Extracting
+  }
+  settimer, refreshtimer, off ; This is to prevent the refreshtimer from interferring in the script.
+  sleep, 5000
+}
+settimer, refreshtimer, 600000
+  tooltip    ; remove the tooltip
+}
+Return
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;                                                                   SPE canned text 
 
 ::INFLAM::The alpha-1, -2 and beta-2 (complement) regions are elevated and there is a polyclonal hypergammaglobulinaemia at  g/L (8 - 14 g/L). `nNo monoclonal peaks are visible. This pattern suggests an inflammatory process.  `nIf the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended.
@@ -1148,6 +1315,11 @@ Return
 ::NORMP::Normal protein electrophoresis pattern.  No monoclonal peaks are present. The gamma region measures _ g/L (8-14 g/L). `nIf the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended.
 ::NEPHR::Hypoalbuminaemia is present.  The alpha-2 (macroglobulin) region is significantly increased at _ g/L (5-9 g/L).  The gamma region measures _ g/L (8-14 g/L). No monoclonal peaks are visible. `nThis pattern suggests nephrotic syndrome. If the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended. 
 ::A-1::The alpha-1 peak is biphasic, suggesting alpha-1-antitrypsin heterozygosity.
+::CSFELEC::
+(Total protein concentration……………   g/L
+Samples with high total protein concentrations >16.8 g/L will not be run due to the increased likelihood of false negative results
+)
+::CLINCONT::Clinician contact details may not be coded in our database.  Please go to the link below to update clinician contact details:`ntinyurl.com/nhls-update
 ::text1::
 (
 Any text
