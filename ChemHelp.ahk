@@ -1,5 +1,5 @@
-;ChemHelp v.1.8 - updated 16-05-2020
-;Written by Dieter van der Westhuizen 2018-2019
+;ChemHelp v.1.9 - updated 06-06-2020
+;Written by Dieter van der Westhuizen 2018-2020
 ;Inspired from TrakHelper by Chad Centner
 
 #SingleInstance, force
@@ -18,6 +18,7 @@ SetWinDelay, 500
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;    Add Buttons ;;;;;;;;;;;;;;;;;;
 Gui, Add, button, x2 y2 w40 h20 ,Log-on
+Gui, Add, button, x44 y2 w40 h20, Mobile
 Gui, add, button,x2 y22 w30 h20  ,Form
 Gui, Add, button, x2 y42 w28 h20  ,EPR
 Gui, Add, button, x2 y64 w33 h20  ,FPSA
@@ -47,9 +48,17 @@ Gui, Show, x%width% y%height% w80
 titleoffice = Microsoft Office Activation Wizard
 classoffice = NUIDialog
 settimer, office_activation_watch, 150
+FileRead, chemhelpsettingsraw, %A_MyDocuments%\chemhelp_settings.txt
+settingsarray := StrSplit(chemhelpsettingsraw, ",")
+citrix_username := settingsarray[1]
+citrix_password := settingsarray[2]
+trakcare_username := settingsarray[3]
+trakcare_password := settingsarray[4]
+tabs_citrix := settingsarray[5]
+
 return
 
-;;;;;;;;;;;;;;;;;;;;;Generic script to close a pop-up window.
+;                                                          Generic script to close a pop-up window.
 office_activation_watch:
 IfWinExist, %titleoffice% ahk_class %classoffice% 
 {
@@ -64,13 +73,31 @@ else
   tooltip    ; remove the tooltip
 return
 
+;--                                                              Enabling and disapbling the proxy
+;Write to the registry; set autoproxy to this value
++!p::
+RegWrite, REG_DWORD, HKCU, Software\Microsoft\Windows\CurrentVersion\Internet Settings, ProxyEnable, 1
+if errorlevel
+	MsgBox % A_LastError
+return
+
+;Write to the registry; set autoproxy to this value
++!r::
+RegWrite, REG_DWORD, HKCU, Software\Microsoft\Windows\CurrentVersion\Internet Settings, ProxyEnable, 0
+if errorlevel
+	MsgBox % A_LastError
+return
 
 #c::
 Run, Calc.exe
 return
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;                                                      This is to LOG-ON with username and password.    
+ButtonMobile:
+run, ChemHelpMobile.ahk
+Return
+
+;---------------------------------             This is to LOG-ON with username and password.    
 
 ButtonLog-on:
 settimer, win_proxy_logon, 500
@@ -82,11 +109,11 @@ run, %url%
 WinActivate, Citrix XenApp
 WinWaitActive, Citrix XenApp
 sleep, 2000
-FileRead, citrix_username, %A_MyDocuments%\citrix_username.txt
-FileRead, citrix_password, %A_MyDocuments%\citrix_password.txt
-FileRead, trakcare_username, %A_MyDocuments%\trakcare_username.txt
-FileRead, trakcare_password, %A_MyDocuments%\trakcare_password.txt
-FileRead, tabs_citrix, %A_MyDocuments%\tabs_citrix.txt
+;FileRead, citrix_username, %A_MyDocuments%\citrix_username.txt
+;FileRead, citrix_password, %A_MyDocuments%\citrix_password.txt
+;FileRead, trakcare_username, %A_MyDocuments%\trakcare_username.txt
+;FileRead, trakcare_password, %A_MyDocuments%\trakcare_password.txt
+;FileRead, tabs_citrix, %A_MyDocuments%\tabs_citrix.txt
 ;FileRead, trakcare_workarea_tabs, %A_MyDocuments%\trakcare_workarea_tabs.txt
 send, %citrix_username%
 sleep, 500
@@ -258,7 +285,10 @@ else
     }
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;                                            Alt+P Enter PHONC
+;-------------------------                                                                  Alt+P Enter PHONC
+ButtonPHONC:
+WinActivate, Medical Validation :   (Authorise By Episode)
+
 #IfWinActive, Medical Validation :   (Authorise By Episode)
 !p::
 EpMedVal()
@@ -344,10 +374,18 @@ else
 MouseClick, left, 70, 300, 1
 sleep, 200
 send, {AltDown}e{AltUp}
+WinWaitActive, Result Entry - Single
+sleep, 200
+send, t{tab}
+sleep, 100
+send, n{tab}
+
 return
 #IfWinActive
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;                                            Ctrl+Alt+P Enter CCOM with Dr. update links
+
+
 #IfWinActive, Medical Validation :   (Authorise By Episode)
 ^!p::
 EpMedVal()
@@ -751,7 +789,45 @@ sleep, 50
 Return
 #IfWinActive
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;                                      Mouse Wheel Actions in Verify   UP and DOWN SCROLL
+;                                                                                                                  Alt + I to invalidate a Potassium
+#IfWinActive Result Entry
+!i::
+  send, {AltDown}d{AltUp}
+  sleep, 150
+  send, a
+  sleep,100
+  WinWaitActive, Assign Reason
+  sleep, 80
+  loop, 9
+    {
+    send i
+    sleep, 70
+    }
+    
+Return
+#IfWinActive
+
+;                                                                                                                  Alt + c to cancel a PHONC
+#IfWinActive Result Entry
+!c::
+  send, {AltDown}d{AltUp}
+  sleep, 150
+  send, a
+  sleep,100
+  WinWaitActive, Assign Reason
+  sleep, 80
+  loop, 10
+    {
+    send c
+    sleep, 70
+    }
+    
+Return
+#IfWinActive
+
+
+
+;                                                                                              Mouse Wheel Actions in Verify   UP and DOWN SCROLL
 #IfWinActive Medical Validation :   (Authorise By Episode)
 
 WheelDown::
