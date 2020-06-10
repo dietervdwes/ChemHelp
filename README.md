@@ -65,6 +65,8 @@ FPSA button on ChemHelp to add a Free PSA to the current episode.
 
 Login button: Runs the login script 
 
+Ex button runs a data extraction script
+
 The source code can be seen by right-clicking on ChemHelp and opening with a Text editor.  Of course you can customize your own version, should you wish, after copying the file to your PC.
 
 # Mouse Scroll Wheel
