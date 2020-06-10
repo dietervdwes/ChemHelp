@@ -6,17 +6,18 @@ Written by Dieter van der Westhuizen, 2018 - current;
 Inspired by Chad Centner - TrakHelper, 2015-2018.
 
 ChemHelp was developed to assist reviewers in Chemical Pathology to eliminate unnecessary mouse use and clicking by automating some of the tasks while using TrakCare for reviewing blood results.
+ChemHelpMobile was made as an interface to sign results via a remote desktop viewer and just enlarges the buttons to be able to click the buttons more easily on a mobile phone.  It includes all the features of ChemHelp, and also needs ChemHelp to be in the same folder.
 NB: Please report any ideas or errors to dieter.vdwesthuizen@nhls.ac.za.  That way I can try improving the app.
 
 # Installation
 1.	Install AutoHotKey by downloading from this page: https://www.autohotkey.com/
 If you want to edit the script for use in your lab, then you will need an applicable text editor, see below.
 
-2.	Copy "ChemHelp.ahk" to local desktop or other convenient location on the local workstation
+2.	Copy "ChemHelp.ahk" and "ChemHelpMobile.ahk" to local desktop or other convenient location on the local workstation
 
 3.	(Optional when wanting to use the Login button) 
-Copy the contents of "Copy_contents_to_My_Documents" to your My Documents folder and replace the contents of each text file with your login details.  Also replace the "tabs_citrix.txt" contents with the amount of {TAB} buttons it takes to navigate to the blue TrakCare icon after having logged into Citrix. (This is usually around 16-20 tabs, depending on how many bookmarks etc. you have and you will need to test this after manually logging into Citrix and counting how many times you need to press tab until the blue TrakCare icon highlights.  Save this number in the "tabs_citrix.txt" file in your Documents folder.
-It is important that the contents (i.e. individual files and NOT the folder), be copied, to your "Documents" root folder.
+Copy the contents of "Copy_contents_to_My_Documents" to your My Documents folder and replace the contents of each field in the text file with your login details.  Replace the "18" in the file (last field) with the amount of {TAB} buttons it takes to navigate to the blue TrakCare icon after having logged into Citrix. (This is usually around 16-20 tabs, depending on how many bookmarks etc. you have and you will need to test this after manually logging into Citrix and counting how many times you need to press tab until the blue TrakCare icon highlights.  Save this number in chemhelp_settings.txt file in your Documents folder.
+It is important that the chemhelp_settings.txt file (i.e. individual file and NOT the folder), be copied, to your "Documents" root folder.
 
 4.	Double click "ChemHelp" which you’ve copied to your Desktop to launch ChemHelp.
 
@@ -57,6 +58,8 @@ Ctrl + Alt + P: From within “Medical Validation”, copies the episode number 
 Alt + F4: Closes any active window.  
 
 Alt + Tab: Switches active windows.
+
+Double click on a text Episode eg. from an email then Alt + Right Click opens a Menu to open features with the episode.
 
 FPSA button on ChemHelp to add a Free PSA to the current episode.
 
