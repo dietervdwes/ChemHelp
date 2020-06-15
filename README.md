@@ -55,6 +55,10 @@ Alt + P: From within “Medical Validation”, copies the episode number and nav
 
 Ctrl + Alt + P: From within “Medical Validation”, copies the episode number and navigates to Result Entry window to add a CCOM and put a standard comment with a link for Dr. to update details.
 
+Alt + C: Cancels phoning if the test item is highlighted in Results Entry window.
+
+Alt + I: Invalidates due to NSS (for Potassiums from peripheral clinics).
+
 Alt + F4: Closes any active window.  
 
 Alt + Tab: Switches active windows.
