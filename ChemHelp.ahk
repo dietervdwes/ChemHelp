@@ -58,6 +58,19 @@ tabs_citrix := settingsarray[5]
 
 return
 
+/*
+;Scheduling a task:
+Loop,
+{
+Sleep, 60000; check time every minet
+if %A_Hour% = 17 ; 5 o clock french time
+    {
+        ; your script here
+    }
+}
+*/
+
+
 ;                                                          Generic script to close a pop-up window.
 office_activation_watch:
 IfWinExist, %titleoffice% ahk_class %classoffice% 
@@ -79,6 +92,8 @@ return
 RegWrite, REG_DWORD, HKCU, Software\Microsoft\Windows\CurrentVersion\Internet Settings, ProxyEnable, 1
 if errorlevel
 	MsgBox % A_LastError
+else
+    MsgBox, Proxy enabled
 return
 
 ;Write to the registry; set autoproxy to this value
@@ -86,7 +101,11 @@ return
 RegWrite, REG_DWORD, HKCU, Software\Microsoft\Windows\CurrentVersion\Internet Settings, ProxyEnable, 0
 if errorlevel
 	MsgBox % A_LastError
+else
+    MsgBox, Proxy disabled
 return
+
+; inetcpl.cpl <- Run this command in Run prompt to set proxy settings
 
 #c::
 Run, Calc.exe
@@ -1388,11 +1407,11 @@ Return
 ::BGB::Beta-gamma bridging is present. This is consistent with a chronic inflammatory process associated with an IgA response.  Causes may include cirrhosis, and cutaneous or mucosal inflammation.
 ::SUSP::If the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended.
 ::REPEATSPE::Repeat SPE is recommended in 3-6 months or when the inflammatory condition has subsided.
-::NORMP::Normal protein electrophoresis pattern.  No monoclonal peaks are present. The gamma region measures _ g/L (8-14 g/L). `nIf the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended.
+::NORMP::Normal protein electrophoresis pattern.  No monoclonal peaks are visible. The gamma region measures _ g/L (8-14 g/L). `nIf the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended.
 ::NEPHR::Hypoalbuminaemia is present.  The alpha-2 (macroglobulin) region is significantly increased at _ g/L (5-9 g/L).  The gamma region measures _ g/L (8-14 g/L). No monoclonal peaks are visible. `nThis pattern suggests nephrotic syndrome. If the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended. 
 ::A-1::The alpha-1 peak is biphasic, suggesting alpha-1-antitrypsin heterozygosity.
 ::CSFELEC::
-(Total protein concentration……………   g/L
+(Total protein concentrationâ€¦â€¦â€¦â€¦â€¦   g/L
 Samples with high total protein concentrations >16.8 g/L will not be run due to the increased likelihood of false negative results
 )
 ::CLINCONT::Clinician contact details may not be coded in our database.  Please go to the link below to update clinician contact details:`ntinyurl.com/nhls-update
@@ -1400,6 +1419,49 @@ Samples with high total protein concentrations >16.8 g/L will not be run due to 
 (
 Any text
 Newline preserved in this way
+)
+::USPCOMMENT::
+(
+~BOLD
+URINE STEROID PROFILE:
+Laboratory information
+~NORMAL
+SOPs used for analysis: SOP-SPT-003: Analysis of Anabolic Steroids
+Samples were analysed according to standard SOPs.  There were no
+deviations from the test methods.  Final results were reviewed and
+approved by a Technical Signatory(ies).
+Key to Coding: GC-MS/MS = Gas Chromatography/Tandem Mass Spectrometry
+               LOQ = Limit of Quantification
+Compound                               Method        Conc. ng/mL
+5a-androstane-2a,17ß-diol (5a-diol)    GC-MS/MS        
+5ß-androstane-2a,17ß-diol (5ß-diol)    GC-MS/MS        
+Androsterone (Andro)                   GC-MS/MS        
+Epitestosterone (E)                    GC-MS/MS        
+Etiocholanolone (Etio)                 GC-MS/MS        
+Testosterone (T)                       GC-MS/MS        
+DHT (5a-Dihydrotestosterone)           GC-MS/MS        
+~BOLD
+Ratios
+~NORMAL
+T/E                                    GC-MS/MS        
+5a-diol/5ß-diol                        GC-MS/MS        
+5ß-diol/EpiT                           GC-MS/MS        
+5a-diol/EpiT                           GC-MS/MS        
+Andro/Etio                             GC-MS/MS        
+Andro/T                                GC-MS/MS        
+Andro/EpiT                             GC-MS/MS        
+T/DHT                                  GC-MS/MS        
+DHT/EpiT                               GC-MS/MS        
+
+Comments:
+The above steroid profile may not be suitable for diagnostic purposes, as some ratios could not be measured accurately as the concentrations were below the limit of quantification of the assay.  
+
+The sample shows signs of extensive degradation as the 5a-androstanedione/Androsterone and/or 5ß-androstanedione/Etiocholanolone ratio are >/= 0.1 in the sample. 
+
+Signed
+Director: JL du Preez
+Test performed at a referral laboratory:
+South African Doping Control Laboratory - SADoCoL
 )
 
 #IfWinNotActive, ahk_class XLMAIN ahk_exe EXCEL.EXE
