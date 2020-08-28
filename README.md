@@ -55,6 +55,10 @@ Alt + P: From within “Medical Validation”, copies the episode number and nav
 
 Ctrl + Alt + P: From within “Medical Validation”, copies the episode number and navigates to Result Entry window to add a CCOM and put a standard comment with a link for Dr. to update details.
 
+Shift + Alt + P: Enable Proxy (via Registry)
+
+Shift + Alt + R: Disable Proxy (via Registry, for example to use wifi on an NHLS computer)
+
 Alt + C: Cancels phoning if the test item is highlighted in Results Entry window.
 
 Alt + I: Invalidates due to NSS (for Potassiums from peripheral clinics).
