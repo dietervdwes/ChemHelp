@@ -33,7 +33,7 @@ Gui, Add, button, x45 y152 w20 h20 ,_i
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;   Set Window Options   ;;;;;;;;;;;;;;
 ;Gui, +AlwaysOnTop
 Gui, -sysmenu +AlwaysOnTop
-Gui, Show, , ChemHelp1.8
+Gui, Show, , ChemHelp1.9
 WinGetPos,,,,TrayHeight,ahk_class Shell_TrayWnd,,,
 height := A_ScreenHeight-270
 width := A_ScreenWidth-85
