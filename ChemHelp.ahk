@@ -1,4 +1,4 @@
-;ChemHelp v.1.9 - updated 06-06-2020
+;ChemHelp v.1.10 - updated 02-10-2020
 ;Written by Dieter van der Westhuizen 2018-2020
 ;Inspired from TrakHelper by Chad Centner
 
@@ -22,6 +22,7 @@ Gui, Add, button, x44 y2 w40 h20, Mobile
 Gui, add, button,x2 y22 w30 h20  ,Form
 Gui, Add, button, x2 y42 w28 h20  ,EPR
 Gui, Add, button, x2 y64 w33 h20  ,FPSA
+Gui, Add, button, x36 y64 w45 h20, dCDUM
 Gui, Add, button, x2 y86 w45 h20  ,Verified
 Gui, Add, button, x2 y108 w57 h20  ,KeepOpen
 Gui, Add, button, x60 y108 w20 h20  ,Ex
@@ -33,14 +34,14 @@ Gui, Add, button, x45 y152 w20 h20 ,_i
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;   Set Window Options   ;;;;;;;;;;;;;;
 ;Gui, +AlwaysOnTop
 Gui, -sysmenu +AlwaysOnTop
-Gui, Show, , ChemHelp1.9
+Gui, Show, , ChemHelp1.10
 WinGetPos,,,,TrayHeight,ahk_class Shell_TrayWnd,,,
 height := A_ScreenHeight-270
-width := A_ScreenWidth-85
+width := A_ScreenWidth-88
 Gui, Margin, 0, 0
 ;Gui, Add, Picture, x0 y0 w411 h485, picture.png
 ;Gui -Caption -Border
-Gui, Show, x%width% y%height% w80
+Gui, Show, x%width% y%height% w84
 
 
 
@@ -674,13 +675,51 @@ sleep, 200
 send, s
 sleep, 200
 WinWaitActive, Test Set Maintenance
-sleep, 200
+ImageSearch, FoundX, FoundY, 15,86, 523, 379, %A_MyDocuments%\cdum.png
+if (ErrorLevel = 2)
+    MsgBox Could not conduct the search for CDUM. Possibly the file cdum.png is missing in "My Documents" folder.
+else if (ErrorLevel = 1)
+    MsgBox CDUM could not be found on the screen.
+else
+    ;MsgBox The icon was found at %FoundX%x%FoundY%.
+    MouseClick, Left, %FoundX%, %FoundY%,
+    sleep, 500
+    send, {AltDown}d{AltUp}
+sleep, 300
+WinActivate, Test Set Maintenance
+sleep, 100
+MouseClick, Left, 830, 308 
+sleep, 100
 send, FPSA
 sleep, 200
 send, {tab down}{tab up}
 send, {enter}
 Return
 
+
+ButtondCDUM:
+WinActivate, Medical Validation :   (Authorise By Episode)
+WinWaitActive, Medical Validation :   (Authorise By Episode)
+sleep, 200
+send, {altdown}d{altup}
+sleep, 200
+send, s
+sleep, 200
+WinWaitActive, Test Set Maintenance
+ImageSearch, FoundX, FoundY, 15,86, 523, 379, %A_MyDocuments%\cdum.png
+if (ErrorLevel = 2)
+    MsgBox Could not conduct the search for CDUM. `nPossibly the file cdum.png is missing in "My Documents" folder.`n If this is the issue, find it on github.com/dietervdwes/chemhelp
+else if (ErrorLevel = 1)
+    MsgBox CDUM could not be found on the screen.
+else
+    ;MsgBox The icon was found at %FoundX%x%FoundY%.
+    MouseClick, Left, %FoundX%, %FoundY%,
+    sleep, 500
+    send, {AltDown}d{AltUp}
+sleep, 300
+WinClose, Test Set Maintenance
+MsgBox, Please confirm that CDUM2 has been removed.
+Return
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;                                                               Button Verified to insert staff note "Transcription Verified"  
 ButtonVerified:
 sleep, 200
@@ -1570,7 +1609,24 @@ sleep, 200
 send, {Tab}
 return
 }
-
+/*
+;-----------------------------   Logging each Authorize
+#IfWinActive, Medical Validation :   (Authorise By Episode) - \\Remote
+!a::
+FileAppend, %A_now%`n, %A_MyDocuments%\chemhelp_log.txt
+sleep, 100
+If WinNotActive("Medical Validation :   (Authorise By Episode) - \\Remote")
+{
+    WinActivate, Medical Validation :   (Authorise By Episode) - \\Remote)
+    send, {AltDown}
+    sleep, 100
+    send, a
+    sleep, 100
+    send, {AltUp}
+    return
+}
+return
+*/
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;                                                                        Button Close    
 ButtonClose:
 WinActivate, ChemHelp
@@ -1587,6 +1643,4 @@ Escape::Reload
 Return
 
 ^!r::Reload  ; Assign Ctrl-Alt-R as a hotkey to restart the script.
-
-    
 
