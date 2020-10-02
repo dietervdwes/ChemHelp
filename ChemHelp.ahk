@@ -247,11 +247,14 @@ return
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;                                                                         Button KeepOpen  
 ButtonKeepOpen:
-MsgBox, This script clicks the refresh button on "Results Entry - Verify" window every 10 minutes to keep TrakCare open.`nPlease make sure that "Results Entry - Verify" window is open when you leave your computer.`nClick OK to start.`nHit Esc when you are back on your computer.
+;MsgBox, This script clicks the refresh button on "Results Entry - Verify" window every 10 minutes to keep TrakCare open.`nPlease make sure that "Results Entry - Verify" window is open when you leave your computer.`nClick OK to start.`nHit Esc when you are back on your computer.
+
+MsgBox, 1, , This script clicks the refresh button on "Results Entry - Verify" window every 10 minutes to keep TrakCare open.`nPlease make sure that "Results Entry - Verify" window is open when you leave your computer.`nClick OK to start.`nHit Esc when you are back on your computer.`nThis MsgBox will time out in 5 seconds.  Continue?, 5
 sleep, 300
 SetTimer, refreshtimer, 600000 ;every 10 minutes
 ;SetTimer, refreshtimer, 300000 ;every 5 minutes
 ;SetTimer, refreshtimer, 5000 ;every 10 sec
+MsgBox, 1, , Timer has been set.`nThis Message will disappear automatically in 2 seconds, 2
 Return
 
 ;This is the script to click refresh on Lab Results verify window. 
