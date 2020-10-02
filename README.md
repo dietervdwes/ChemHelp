@@ -69,7 +69,8 @@ Alt + Tab: Switches active windows.
 
 Double click on a text Episode eg. from an email then Alt + Right Click opens a Menu to open features with the episode.
 
-FPSA button on ChemHelp to add a Free PSA to the current episode.
+FPSA button on ChemHelp to add a Free PSA to the current episode and remove the CDUM2. (Requires the cdum.png file to be present in "My Documents" folder)
+dCDUM button removes the CDUM2 only.
 
 Login button: Runs the login script 
 
