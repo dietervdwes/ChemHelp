@@ -131,7 +131,9 @@ See the Puppeteer documentation online for more info on the web scraping techniq
 ChemHelp was originally developed for use at Groote Schuur Hospital Chemical Pathology, but most functions should also be useable by other laboratories within the NHLS.
 Most functions, eg. the Form button (or Ctrl + F), can be adapted to work at other laboratories with their respective file- / pdf servers.
 The ECM and interaction with it has not yet been configured, as we do not use the ECM server in the Western Cape.
-I am however keen to visit another lab (or have an ECHO session) to learn how this works and try to implement it to work on this system as well.
+I am however keen to visit another lab (or have a Zoom session) to learn how this works and try to implement it to work on this system as well.
+
+The EPR to Excel Function must be coded to extract Free Text (F6) comments too.  This is quite a task which will likely take some time and planning to complete one day.
 
 ChemHelp-Chrome.ahk was a work in progress to open the scanned forms as well as the EPR in Chrome browser rather than the default Internet Explorer.  I am not working on this now anymore, as Internet Explorer seems to be working fine.
 
