@@ -21,12 +21,14 @@ Gui, Add, button, x2 y2 w40 h20 ,Log-on
 Gui, Add, button, x44 y2 w40 h20, Mobile
 Gui, add, button,x2 y22 w30 h20  ,Form
 Gui, Add, button, x2 y42 w28 h20  ,EPR
+Gui, Add, button, x30 y42 w45 h20, EPRxlsx
 Gui, Add, button, x2 y64 w33 h20  ,FPSA
 Gui, Add, button, x36 y64 w45 h20, dCDUM
 Gui, Add, button, x2 y86 w45 h20  ,Verified
 Gui, Add, button, x2 y108 w57 h20  ,KeepOpen
 Gui, Add, button, x60 y108 w20 h20  ,Ex
-Gui, Add, button, x2 y130 w45 h20  ,More
+Gui, Add, button, x2 y130 w36 h20  ,More
+;Gui, Add, button, x40 y130 w45 h20, ExMRN
 Gui, Add, button, x2 y152 w32 h20 ,Close
 Gui, Add, button, x45 y152 w20 h20 ,_i
 ;Gui, Add, Button, x6 y17 w100 h30 , Ok
@@ -34,7 +36,7 @@ Gui, Add, button, x45 y152 w20 h20 ,_i
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;   Set Window Options   ;;;;;;;;;;;;;;
 ;Gui, +AlwaysOnTop
 Gui, -sysmenu +AlwaysOnTop
-Gui, Show, , ChemHelp1.10
+Gui, Show, , ChemHelp1.11
 WinGetPos,,,,TrayHeight,ahk_class Shell_TrayWnd,,,
 height := A_ScreenHeight-270
 width := A_ScreenWidth-88
@@ -128,7 +130,7 @@ url :="http://nhlslisapps02.nhls.ac.za/Citrix/XenApp/auth/login.aspx"
 run, %url%
 WinActivate, Citrix XenApp
 WinWaitActive, Citrix XenApp
-sleep, 2000
+sleep, 2500
 ;FileRead, citrix_username, %A_MyDocuments%\citrix_username.txt
 ;FileRead, citrix_password, %A_MyDocuments%\citrix_password.txt
 ;FileRead, trakcare_username, %A_MyDocuments%\trakcare_username.txt
@@ -140,17 +142,64 @@ sleep, 500
 send, {TAB down}{TAB up}
 sleep, 200
 send, %citrix_password%
-sleep, 200
+sleep, 300
 send, {Return}
 sleep, 3000
-
+/*
 Loop %tabs_citrix%
 {
     Send {Tab down}
 	Send {Tab up}
     Sleep 80  ;      The number of milliseconds between keystrokes (or use SetKeyDelay).
 }
-
+*/
+ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_big100.PNG
+if (ErrorLevel = 2)
+    MsgBox Could not conduct the search for the TrakCare Icon. Possibly the files in the folder trakcare_icons is missing in your "Documents" folder.
+else if (ErrorLevel = 1)
+    ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_big095.PNG
+    if (ErrorLevel = 1)
+        ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_big090.PNG
+        if (ErrorLevel = 1)
+            ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_big085.PNG
+            if (ErrorLevel = 1)
+                ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_big080.PNG
+                if (ErrorLevel = 1)
+                    ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_big105.PNG
+                    if (ErrorLevel = 1)
+                        ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_big110.PNG
+                        if (ErrorLevel = 1)
+                            ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_big115.PNG
+                            if (ErrorLevel = 1)
+                                ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_big120.PNG
+                                if (ErrorLevel = 1)
+                                    ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_big125.PNG
+if (ErrorLevel = 1)
+    ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_small100.PNG
+if (ErrorLevel = 1)
+    ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_small095.PNG
+    if (ErrorLevel = 1)
+        ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_small090.PNG
+        if (ErrorLevel = 1)
+            ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_small085.PNG
+            if (ErrorLevel = 1)
+                ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_small080.PNG
+                if (ErrorLevel = 1)
+                    ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_small105.PNG
+                    if (ErrorLevel = 1)
+                        ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_small110.PNG
+                        if (ErrorLevel = 1)
+                            ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_small115.PNG
+                            if (ErrorLevel = 1)
+                                ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_small120.PNG
+                                if (ErrorLevel = 1)
+                                    ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_small125.PNG
+else if (ErrorLevel = 1)
+MsgBox TrakCare Icon could not be found on the screen.
+else
+    ;MsgBox The icon was found at %FoundX%x`;%FoundY%y.
+    MouseClick, Left, %FoundX%, %FoundY%,
+    sleep, 500
 sleep, 300
 
 send, {Enter}
@@ -592,16 +641,34 @@ sleep, 300
 IfWinActive, Result Entry - Single - 
 {
 MRNSingle()
+txt := Clipboard
+url := "http://trakdb-prod.nhls.ac.za:57772/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=" . txt
+run, %url%
+sleep, 800
+WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
+return
 }
     
-    else IfWinActive, Medical Validation :   (Authorise By Episode)
-    {
-    MRNMedVal()
-    }
+else IfWinActive, Medical Validation :   (Authorise By Episode)
+{
+MRNMedVal()
+txt := Clipboard
+url := "http://trakdb-prod.nhls.ac.za:57772/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=" . txt
+run, %url%
+sleep, 800
+WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
+return
+}
 
 else IfWinActive, Result Verify - Single - 
 {
 MRNResultVerSingle()
+txt := Clipboard
+url := "http://trakdb-prod.nhls.ac.za:57772/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=" . txt
+run, %url%
+sleep, 800
+WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
+return
 }
 
 else
@@ -1125,10 +1192,10 @@ send, ^c
 ClipWait
 sleep, 100
 txt := Clipboard
-sleep, 250
+sleep, 200
 WinClose, Clinical History
-sleep, 250
-Return
+WinWaitClose, Clinical History
+sleep, 50
 }
 
 EpResultSingle()
@@ -1153,8 +1220,8 @@ sleep, 200
 txt := Clipboard
 sleep, 200
 WinClose, Clinical History
-sleep, 100
-Return  
+WinWaitClose, Clinical History
+sleep, 50
 }
 
 EpResultVerSingle()
@@ -1180,8 +1247,8 @@ sleep, 200
 txt := Clipboard
 sleep, 200
 WinClose, Clinical History
-sleep, 100
-Return
+WinWaitClose, Clinical History
+sleep, 50
 }
 
 MRNSingle()
@@ -1207,12 +1274,8 @@ sleep, 200
 txt := Clipboard
 sleep, 200
 WinClose, Patient History
-sleep, 200
-url := "http://trakdb-prod.nhls.ac.za:57772/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=" . txt
-run, %url%
-sleep, 800
-WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
-Return
+WinWaitClose, Patient History
+sleep, 50
 }
 
 
@@ -1237,12 +1300,8 @@ sleep, 200
 txt := Clipboard
 sleep, 200
 WinClose, Patient History
-sleep, 200
-url := "http://trakdb-prod.nhls.ac.za:57772/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=" . txt
-run, %url%
-sleep, 800
-WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
-Return
+WinWaitClose, Patient History
+sleep, 50
 }
 
 MRNResultVerSingle()
@@ -1266,12 +1325,8 @@ sleep, 200
 txt := Clipboard
 sleep, 200
 WinClose, Patient History
-sleep, 200
-url := "http://trakdb-prod.nhls.ac.za:57772/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=" . txt
-run, %url%
-sleep, 800
-WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
-Return
+WinWaitClose, Patient History
+sleep, 50
 }
 
 
@@ -1296,6 +1351,58 @@ if !WinExist("Monthly Statistics (Not Responding) - \\Remote")
     return
 }
 Return
+
+
+ButtonEPRxlsx:
+;--------------------------------Saving the patient's cumulative history in an Excel file: requires Node installed with Puppeteer module and the SavePatientEPR.js script.              
+
+send, {AltDown}{Tab}{AltUp}
+sleep, 200 
+
+!+w::
+sleep, 300
+IfWinActive, Result Entry - Single - 
+{
+MRNSingle()
+txt := Clipboard
+run node %A_MyDocuments%\SavePatientEPR.js %txt%
+if (ErrorLevel = "ERROR")
+    MsgBox There was an error, likely Node is not installed.
+else
+return
+}
+    
+else IfWinActive, Medical Validation :   (Authorise By Episode)
+{
+MRNMedVal()
+txt := Clipboard
+run node %A_MyDocuments%\SavePatientEPR.js %txt%
+;Make sure Node.js is installed and that the SavePatientEPRs.js file, the node_modules folder, package.json and package-lock.json is present in "My Documents" folder.
+if (ErrorLevel != 0)
+    MsgBox There was an error, likely Node is not installed.
+else
+return
+}
+
+else IfWinActive, Result Verify - Single - 
+{
+MRNResultVerSingle()
+txt := Clipboard
+run node %A_MyDocuments%\SavePatientEPR.js %txt%
+if (ErrorLevel = "ERROR")
+    MsgBox There was an error, likely Node is not installed.
+else
+return
+}
+
+else
+{
+MsgBox, No TrakCare window active.  `nPlease ensure Result Entry or Result Verify windows are open and visible.
+sleep, 200
+return
+}
+Return
+
 
 ButtonEx:
 Extract()
@@ -1453,7 +1560,7 @@ Return
 ::NEPHR::Hypoalbuminaemia is present.  The alpha-2 (macroglobulin) region is significantly increased at _ g/L (5-9 g/L).  The gamma region measures _ g/L (8-14 g/L). No monoclonal peaks are visible. `nThis pattern suggests nephrotic syndrome. If the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended. 
 ::A-1::The alpha-1 peak is biphasic, suggesting alpha-1-antitrypsin heterozygosity.
 ::CSFELEC::
-(Total protein concentrationâ€¦â€¦â€¦â€¦â€¦   g/L
+(Total protein concentration……………   g/L
 Samples with high total protein concentrations >16.8 g/L will not be run due to the increased likelihood of false negative results
 )
 ::CLINCONT::Clinician contact details may not be coded in our database.  Please go to the link below to update clinician contact details:`ntinyurl.com/nhls-update
@@ -1475,8 +1582,8 @@ approved by a Technical Signatory(ies).
 Key to Coding: GC-MS/MS = Gas Chromatography/Tandem Mass Spectrometry
                LOQ = Limit of Quantification
 Compound                               Method        Conc. ng/mL
-5a-androstane-2a,17ß-diol (5a-diol)    GC-MS/MS        
-5ß-androstane-2a,17ß-diol (5ß-diol)    GC-MS/MS        
+5a-androstane-2a,17�-diol (5a-diol)    GC-MS/MS        
+5�-androstane-2a,17�-diol (5�-diol)    GC-MS/MS        
 Androsterone (Andro)                   GC-MS/MS        
 Epitestosterone (E)                    GC-MS/MS        
 Etiocholanolone (Etio)                 GC-MS/MS        
@@ -1486,8 +1593,8 @@ DHT (5a-Dihydrotestosterone)           GC-MS/MS
 Ratios
 ~NORMAL
 T/E                                    GC-MS/MS        
-5a-diol/5ß-diol                        GC-MS/MS        
-5ß-diol/EpiT                           GC-MS/MS        
+5a-diol/5�-diol                        GC-MS/MS        
+5�-diol/EpiT                           GC-MS/MS        
 5a-diol/EpiT                           GC-MS/MS        
 Andro/Etio                             GC-MS/MS        
 Andro/T                                GC-MS/MS        
@@ -1498,7 +1605,7 @@ DHT/EpiT                               GC-MS/MS
 Comments:
 The above steroid profile may not be suitable for diagnostic purposes, as some ratios could not be measured accurately as the concentrations were below the limit of quantification of the assay.  
 
-The sample shows signs of extensive degradation as the 5a-androstanedione/Androsterone and/or 5ß-androstanedione/Etiocholanolone ratio are >/= 0.1 in the sample. 
+The sample shows signs of extensive degradation as the 5a-androstanedione/Androsterone and/or 5�-androstanedione/Etiocholanolone ratio are >/= 0.1 in the sample. 
 
 Signed
 Director: JL du Preez
@@ -1646,4 +1753,3 @@ Escape::Reload
 Return
 
 ^!r::Reload  ; Assign Ctrl-Alt-R as a hotkey to restart the script.
-
