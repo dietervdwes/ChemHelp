@@ -1,4 +1,4 @@
-;ChemHelp v.1.10 - updated 02-10-2020
+;ChemHelp v.1.11 - updated 14-12-2020
 ;Written by Dieter van der Westhuizen 2018-2020
 ;Inspired from TrakHelper by Chad Centner
 
@@ -28,6 +28,7 @@ Gui, Add, button, x2 y86 w45 h20  ,Verified
 Gui, Add, button, x2 y108 w57 h20  ,KeepOpen
 Gui, Add, button, x60 y108 w20 h20  ,Ex
 Gui, Add, button, x2 y130 w36 h20  ,More
+Gui, Add, button, x40 y130 w36 h20, VPN
 ;Gui, Add, button, x40 y130 w45 h20, ExMRN
 Gui, Add, button, x2 y152 w32 h20 ,Close
 Gui, Add, button, x45 y152 w20 h20 ,_i
@@ -109,6 +110,23 @@ else
 return
 
 ; inetcpl.cpl <- Run this command in Run prompt to set proxy settings
+
+buttonVPN:
+run, "C:\Program Files\ShrewSoft\VPN Client\ipseca.exe"
+WinWaitActive, VPN Access Manager
+WinActivate, VPN Access Manager
+MouseClick, left, 46, 121, 2, 100
+WinWaitActive, VPN Connect
+send, %citrix_username%
+sleep, 200
+send, {TAB down}{TAB up}
+sleep, 200
+send, %citrix_password%
+sleep, 300
+send, {TAB down}{TAB up}
+send, {Return}
+return
+
 
 #c::
 Run, Calc.exe
@@ -776,6 +794,7 @@ sleep, 200
 send, s
 sleep, 200
 WinWaitActive, Test Set Maintenance
+sleep, 800
 ImageSearch, FoundX, FoundY, 15,86, 523, 379, %A_MyDocuments%\cdum.png
 if (ErrorLevel = 2)
     MsgBox Could not conduct the search for CDUM. `nPossibly the file cdum.png is missing in "My Documents" folder.`n If this is the issue, find it on github.com/dietervdwes/chemhelp
@@ -1548,11 +1567,12 @@ settimer, refreshtimer, 600000
 Return
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;                                                                   SPE canned text 
 
-::INFLAM::The alpha-1, -2 and beta-2 (complement) regions are elevated and there is a polyclonal hypergammaglobulinaemia at  g/L (8 - 14 g/L). `nNo monoclonal peaks are visible. This pattern suggests an inflammatory process.  `nIf the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended.
+::INFLAM::The alpha-1, alpha-2 and beta-2 (complement) regions are elevated. The gamma region measures _ g/L (8 - 14 g/L). `nNo monoclonal peaks are visible. This pattern suggests an inflammatory process.  `nIf the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended.
+::INFLAMP::The alpha-1, alpha-2 and beta-2 (complement) regions are elevated and there is a polyclonal hypergammaglobulinaemia at  g/L (8 - 14 g/L). `nNo monoclonal peaks are visible. This pattern suggests an inflammatory process.  `nIf the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended.
 ::INFLAMS::The alpha-1, -2 and beta-2 (complement) region is elevated and the gamma region measures _ g/L (8 - 14 g/L). `nNo monoclonal peaks are visible. This pattern suggests an inflammatory process.  `nIf the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended.
 ::PREV::The previously typed monoclonal Ig_ persists in _ gamma at _ g/L.  Immunoparesis is _.
-::PROM::A prominent peak is present in the mid-gamma region measuring g/L. The remainder of the gamma region measures g/L (8-14 g/L).  Immunotyping will be performed. Please see results below.
-::SURINE::Please send urine (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) for Bence Jones protein electrophoresis.
+::PROM::A prominent peak is present in the mid-gamma region measuring g/L. The remainder of the gamma region measures g/L (8-14 g/L).  Immunotyping will be performed. Please see results below, to follow.
+::SURINE::Please send urine (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) for Bence Jones protein electrophoresis and serum for free light chain analysis.
 ::BGB::Beta-gamma bridging is present. This is consistent with a chronic inflammatory process associated with an IgA response.  Causes may include cirrhosis, and cutaneous or mucosal inflammation.
 ::SUSP::If the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended.
 ::REPEATSPE::Repeat SPE is recommended in 3-6 months or when the inflammatory condition has subsided.
@@ -1560,7 +1580,7 @@ Return
 ::NEPHR::Hypoalbuminaemia is present.  The alpha-2 (macroglobulin) region is significantly increased at _ g/L (5-9 g/L).  The gamma region measures _ g/L (8-14 g/L). No monoclonal peaks are visible. `nThis pattern suggests nephrotic syndrome. If the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended. 
 ::A-1::The alpha-1 peak is biphasic, suggesting alpha-1-antitrypsin heterozygosity.
 ::CSFELEC::
-(Total protein concentration……………   g/L
+(Total protein concentrationâ€¦â€¦â€¦â€¦â€¦   g/L
 Samples with high total protein concentrations >16.8 g/L will not be run due to the increased likelihood of false negative results
 )
 ::CLINCONT::Clinician contact details may not be coded in our database.  Please go to the link below to update clinician contact details:`ntinyurl.com/nhls-update
@@ -1582,8 +1602,8 @@ approved by a Technical Signatory(ies).
 Key to Coding: GC-MS/MS = Gas Chromatography/Tandem Mass Spectrometry
                LOQ = Limit of Quantification
 Compound                               Method        Conc. ng/mL
-5a-androstane-2a,17�-diol (5a-diol)    GC-MS/MS        
-5�-androstane-2a,17�-diol (5�-diol)    GC-MS/MS        
+5a-androstane-2a,17ï¿½-diol (5a-diol)    GC-MS/MS        
+5ï¿½-androstane-2a,17ï¿½-diol (5ï¿½-diol)    GC-MS/MS        
 Androsterone (Andro)                   GC-MS/MS        
 Epitestosterone (E)                    GC-MS/MS        
 Etiocholanolone (Etio)                 GC-MS/MS        
@@ -1593,8 +1613,8 @@ DHT (5a-Dihydrotestosterone)           GC-MS/MS
 Ratios
 ~NORMAL
 T/E                                    GC-MS/MS        
-5a-diol/5�-diol                        GC-MS/MS        
-5�-diol/EpiT                           GC-MS/MS        
+5a-diol/5ï¿½-diol                        GC-MS/MS        
+5ï¿½-diol/EpiT                           GC-MS/MS        
 5a-diol/EpiT                           GC-MS/MS        
 Andro/Etio                             GC-MS/MS        
 Andro/T                                GC-MS/MS        
@@ -1605,7 +1625,7 @@ DHT/EpiT                               GC-MS/MS
 Comments:
 The above steroid profile may not be suitable for diagnostic purposes, as some ratios could not be measured accurately as the concentrations were below the limit of quantification of the assay.  
 
-The sample shows signs of extensive degradation as the 5a-androstanedione/Androsterone and/or 5�-androstanedione/Etiocholanolone ratio are >/= 0.1 in the sample. 
+The sample shows signs of extensive degradation as the 5a-androstanedione/Androsterone and/or 5ï¿½-androstanedione/Etiocholanolone ratio are >/= 0.1 in the sample. 
 
 Signed
 Director: JL du Preez
