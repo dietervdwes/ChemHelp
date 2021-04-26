@@ -1652,6 +1652,7 @@ South African Doping Control Laboratory - SADoCoL
 ;;::RA::Dr. Razia Banderker
 ;::TH::Dr. Thando Gcingca
 
+::ALDOR::The aldosterone:renin ratio cannot be accurately determined but is greater/less than _. 
 #IfWinNotActive
 
 
