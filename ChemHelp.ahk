@@ -1,4 +1,4 @@
-;ChemHelp v.1.11 - updated 14-12-2020
+﻿;ChemHelp v.1.11 - updated 14-12-2020
 ;Written by Dieter van der Westhuizen 2018-2020
 ;Inspired from TrakHelper by Chad Centner
 
@@ -125,7 +125,11 @@ send, %citrix_password%
 sleep, 300
 send, {TAB down}{TAB up}
 send, {Return}
+sleep, 2000
+WinMinimize, VPN Connect
+WinMinimize, VPN Access Manager
 return
+
 
 
 #c::
@@ -1580,7 +1584,7 @@ Return
 ::NEPHR::Hypoalbuminaemia is present.  The alpha-2 (macroglobulin) region is significantly increased at _ g/L (5-9 g/L).  The gamma region measures _ g/L (8-14 g/L). No monoclonal peaks are visible. `nThis pattern suggests nephrotic syndrome. If the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended. 
 ::A-1::The alpha-1 peak is biphasic, suggesting alpha-1-antitrypsin heterozygosity.
 ::CSFELEC::
-(Total protein concentrationâ€¦â€¦â€¦â€¦â€¦   g/L
+(Total protein concentration……………   g/L
 Samples with high total protein concentrations >16.8 g/L will not be run due to the increased likelihood of false negative results
 )
 ::CLINCONT::Clinician contact details may not be coded in our database.  Please go to the link below to update clinician contact details:`ntinyurl.com/nhls-update
@@ -1602,8 +1606,8 @@ approved by a Technical Signatory(ies).
 Key to Coding: GC-MS/MS = Gas Chromatography/Tandem Mass Spectrometry
                LOQ = Limit of Quantification
 Compound                               Method        Conc. ng/mL
-5a-androstane-2a,17ï¿½-diol (5a-diol)    GC-MS/MS        
-5ï¿½-androstane-2a,17ï¿½-diol (5ï¿½-diol)    GC-MS/MS        
+5a-androstane-2a,17�-diol (5a-diol)    GC-MS/MS        
+5�-androstane-2a,17�-diol (5�-diol)    GC-MS/MS        
 Androsterone (Andro)                   GC-MS/MS        
 Epitestosterone (E)                    GC-MS/MS        
 Etiocholanolone (Etio)                 GC-MS/MS        
@@ -1613,8 +1617,8 @@ DHT (5a-Dihydrotestosterone)           GC-MS/MS
 Ratios
 ~NORMAL
 T/E                                    GC-MS/MS        
-5a-diol/5ï¿½-diol                        GC-MS/MS        
-5ï¿½-diol/EpiT                           GC-MS/MS        
+5a-diol/5�-diol                        GC-MS/MS        
+5�-diol/EpiT                           GC-MS/MS        
 5a-diol/EpiT                           GC-MS/MS        
 Andro/Etio                             GC-MS/MS        
 Andro/T                                GC-MS/MS        
@@ -1625,7 +1629,7 @@ DHT/EpiT                               GC-MS/MS
 Comments:
 The above steroid profile may not be suitable for diagnostic purposes, as some ratios could not be measured accurately as the concentrations were below the limit of quantification of the assay.  
 
-The sample shows signs of extensive degradation as the 5a-androstanedione/Androsterone and/or 5ï¿½-androstanedione/Etiocholanolone ratio are >/= 0.1 in the sample. 
+The sample shows signs of extensive degradation as the 5a-androstanedione/Androsterone and/or 5�-androstanedione/Etiocholanolone ratio are >/= 0.1 in the sample. 
 
 Signed
 Director: JL du Preez
@@ -1652,7 +1656,6 @@ South African Doping Control Laboratory - SADoCoL
 ;;::RA::Dr. Razia Banderker
 ;::TH::Dr. Thando Gcingca
 
-::ALDOR::The aldosterone:renin ratio cannot be accurately determined but is greater/less than _. 
 #IfWinNotActive
 
 
