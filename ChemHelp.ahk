@@ -1,5 +1,5 @@
-﻿;ChemHelp v.1.11 - updated 14-12-2020
-;Written by Dieter van der Westhuizen 2018-2020
+;ChemHelp v.1.12 - updated 15-07-2021
+;Written by Dieter van der Westhuizen 2018-2021
 ;Inspired from TrakHelper by Chad Centner
 
 #SingleInstance, force
@@ -37,7 +37,7 @@ Gui, Add, button, x45 y152 w20 h20 ,_i
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;   Set Window Options   ;;;;;;;;;;;;;;
 ;Gui, +AlwaysOnTop
 Gui, -sysmenu +AlwaysOnTop
-Gui, Show, , ChemHelp1.11
+Gui, Show, , ChemHelp1.12
 WinGetPos,,,,TrayHeight,ahk_class Shell_TrayWnd,,,
 height := A_ScreenHeight-270
 width := A_ScreenWidth-88
@@ -129,8 +129,6 @@ sleep, 2000
 WinMinimize, VPN Connect
 WinMinimize, VPN Access Manager
 return
-
-
 
 #c::
 Run, Calc.exe
@@ -1061,8 +1059,8 @@ Return
 #IfWinActive
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;       RIGHT CLICK ALT MENU: cobbled together somehow, by Samuel Murray - 26 May 2018, edited by Dieter (18/09/2019)
-;;;;;; for testing: Episode Number: SA01912457
+;                                                        ALT-RIGHT CLICK ALT MENU: cobbled together somehow, by Samuel Murray - 26 May 2018, edited by Dieter (18/09/2019)
+;;;;;;                                    for testing: Episode Number: SA01912457
 
 !RButton::
 
@@ -1353,7 +1351,7 @@ sleep, 50
 }
 
 
-;;;;;;;;;;;;;;;;;;;;; Script to Loop Extraction by pre-defined Extracting Criteria with a pre-formatted configuration CSV.
+;---------------------------------------------------------- Script to Loop Extraction by pre-defined Extracting Criteria with a pre-formatted configuration CSV.
 #IfWinActive, Monthly Statistics (Not Responding) - \\Remote
 !e::
 settimer, extraction_watch, 10000
@@ -1646,7 +1644,7 @@ South African Doping Control Laboratory - SADoCoL
 ;If you have a long name like me, you can enter a shortcode like below, without the preceeding ";".  
 ;Type "d1" then space or tab and the text as coded will be typed automatically.
 
-::D1::Dr. Dieter van der Westhuizen
+::D1::Dr Dieter van der Westhuizen
 ;::R1::Dr. Ronald Dalmacio
 ;::C1::Dr. Careen Hudson
 ;::H.::Dr. Heleen Vreede
@@ -1665,27 +1663,50 @@ Button_i:
 run, http://nhls-results.co.za/chemhelp-readme/
 return
 
+;!RButton::
+;MouseGetPos, xpos, ypos, window
+;Gui, New , , ChemHelp
+;Gui, Add, Button, gScript1, [&1] Open in Patient Entry
+;Gui, Add, Button, gScript2, [&2] Open in Result Entry
+;Gui, Add, Button, gScript3, [&3] Open in Specimen Info
+;Gui, Add, Button, gScript4, [&4] Open form on Equation
+;Gui, Add, Button, gExitApp, Reload
+;
+;Gui, -Border
+;Gui, Show, x%xpos% y%ypos%
+;return
+
+;Script1:
+;Gui, Hide
+;sleep, 600
+;send, {CtrlDown}c{CtrlUp}
+;sleep, 500
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;                                                                            Button More
 ButtonMore:
-Gui, ChemHelpMore:New , -SysMenu , ChemHelp - More
-Gui, Add, Edit, r1 vEpisode w135, Episode-or-MRN
-Gui, Add, Edit, r1 vRefno w135, Lab Ref.
-Gui, Add, button, x2 y64 h20  ,Form1
-Gui, Add, button, x2 y86 h20  ,EPR_from_MRN
-Gui, Add, button, x2 y108 h20  ,Open_Specimen_info
-Gui, Add, button, x2 y130 h20  ,Enter_Private_Result
-Gui, Add, button, x2 y152 h20 ,Close2
-;Gui, Add, button, x45 y152 h20 ,_i_
-;Gui, Add, Button, x6 y17 w100 h30 , Ok
-;Gui, Add, Button, x116 y17 w100 h30 , Cancel
-WinGetPos,,,,TrayHeight,ahk_class Shell_TrayWnd,,,
-ypos := A_ScreenHeight-270
-xpos := A_ScreenWidth-250
-Gui, Margin, 0, 0
-Gui, Show, x%xpos% y%ypos% w155, ChemHelp - More
-Return
 
-ButtonForm1:
+Gui, New , , ChemHelp
+Gui, Add, Edit, r1 vEpisode w135, EpisodeOrMRN
+Gui, Add, Button, gMoreScript1, [&1] Open form on Equation
+Gui, Add, Button, gMoreScript2, [&2] Open MRN in EPR view
+Gui, Add, Button, gMoreScript3, [&3] Locate Episode Storage position
+Gui, Add, Button, gMoreScript4, [&4] Open in Patient Entry 
+Gui, Add, Button, gMoreScript5, [&5] Extract MRN to ExcelFile
+Gui, Add, Button, gMoreScript6, [&6] SPE Comment
+Gui, Add, Button, gMoreScript7, [&7] IFE Comment
+Gui, Add, Button, gMoreScript8, [&8] Histo Comment
+Gui, Add, Button, gMoreScript9, [&9] UOA Comment
+Gui, Add, Button, x150 y265 w35 h20 gExitApp,  Close 
+;Gui, -Border
+WinGetPos,,,,TrayHeight,ahk_class Shell_TrayWnd,,,
+ypos := A_ScreenHeight-370
+xpos := A_ScreenWidth-290
+Gui, Margin, 0, 0
+Gui, Show, x%xpos% y%ypos% w190, ChemHelp - More
+return
+
+MoreScript1:
         Gui, Submit
 		url := "http://172.22.4.40/multipdfsearch.php?file=" . Episode . ""
 		run, %url%
@@ -1693,31 +1714,68 @@ ButtonForm1:
 		WinMove, Internet Explorer ahk_class IEFrame,, A_ScreenWidth-537, 0, 545, A_ScreenHeight-25
 		Return
 		
-ButtonEPR_from_MRN:
+MoreScript2:
         Gui, Submit
 		url := "http://trakdb-prod.nhls.ac.za:57772/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=" . Episode . ""
 		run, %url%
 		sleep, 800
 		WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
 		Return
-ButtonOpen_Specimen_info:
+MoreScript3:
 		Gui, Submit
-		sleep, 200
-        Specinfolookup()
+		sleep, 100
+        Specinfolookup(Episode)
 		Return
-ButtonEnter_Private_Result:
+MoreScript4:
         Gui, Submit
-		MsgBox, The episode number is: %Episode%
+		sleep, 100
+        OpenEpInPatientEntry(Episode)
 		Return
+MoreScript5:
+        Gui, Submit
+        run node %A_MyDocuments%\SavePatientEPR.js %Episode%
+        if (ErrorLevel = "ERROR")
+            MsgBox There was an error, likely Node is not installed.
+        else
+        Return
+MoreScript6:
+        Gui, Submit
+		url := "http://trakdb-prod.nhls.ac.za:57772/csp/reporting/eprajax.csp?chunk=" . Episode . "^C112^1^CF112^"
+		run, %url%
+		sleep, 800
+		WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
+        Return
+MoreScript7:
+        Gui, Submit
+		url := "http://trakdb-prod.nhls.ac.za:57772/csp/reporting/eprajax.csp?chunk=" . Episode . "^C113^1^CF113^"
+		run, %url%
+		sleep, 800
+		WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
+        Return
+MoreScript8:
+        Gui, Submit
+		url := "http://trakdb-prod.nhls.ac.za:57772/csp/reporting/eprajax.csp?chunk=" . Episode . "^A030^1^T^"
+		run, %url%
+		sleep, 800
+		WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
+        Return
+        Return
+MoreScript9: 
+        Gui, Submit
+		url := "http://trakdb-prod.nhls.ac.za:57772/csp/reporting/eprajax.csp?chunk=" . Episode . "^C440^1^C3200^"
+		run, %url%
+		sleep, 800
+		WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
+        Return
 ButtonClose2:
 sleep, 500
 send, {altdown}{F4 down}{F4 up}{altup}
 sleep, 100
 Return
 
-return
-
-Specinfolookup()
+;SA04972912
+;MRN73839380
+Specinfolookup(epis)
 {
 IfWinExist, Specimen Information
 {
@@ -1726,7 +1784,6 @@ IfWinExist, Specimen Information
 	MouseClick, Left, 77, 82, 2, 100
 	sleep, 500
 }
-
 Else IfWinNotExist, Specimen Information
 {
 	IfWinNotActive,  NHLS, , WinActivate,  NHLS, 
@@ -1736,12 +1793,39 @@ Else IfWinNotExist, Specimen Information
 	Send, Specimen Information{Enter}
 	WinWaitActive, Specimen Information
 }
-
 sleep, 500
-send, %Episode%
+send, %epis%
 sleep, 200
 send, {Tab}
+sleep, 200
+MouseClick, Left, 271, 271
+send, {Altdown}d{AltUp}
 return
+}
+
+OpenEpInPatientEntry(epis)
+{
+    IfWinExist, Result Entry - Single
+    {
+        MsgBox, Result Entry - Single window is already open.  It needs to be closed for this function to work.
+        Return
+    }
+    Else IfWinNotExist, Result Entry - Single
+    {
+        IfWinNotActive,  NHLS, , WinActivate,  NHLS,
+        WinWaitActive,  NHLS,
+        Sleep, 200
+        Send, {Home}
+        sleep, 100
+        Send, Result Entry
+        sleep, 100
+        Send, {Enter}
+        WinWaitActive, Result Entry - \\Remote
+        sleep, 200
+        send, %epis%
+        send, {Enter}
+        Return
+    }
 }
 /*
 ;-----------------------------   Logging each Authorize
