@@ -127,8 +127,7 @@ See the Puppeteer documentation online for more info on the web scraping techniq
 
 # More button
 This opens a small window which includes an edit box which can take an Episode or MRN and perform various functions such as:
-
-1 Open the form of an episode on equation document viewer
+1. Open the form of an episode on equation document viewer
 2. Open MRN number in EPR view (needs the MRN prefix to the MRN number)
 3. Locate an episode's storage position.
 4. Open the episode in Patient Entry - Single window (Single window needs to be closed for this to work)
