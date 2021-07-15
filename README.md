@@ -120,10 +120,23 @@ Requirements:
 1. Node.js must be installed on the PC.
 2. SavePatientEPR.js file must be present in "My Documents" folder
 3. package.json and package-lock.json must be present in "My Documents" folder
-4. node_modules must be present in the "My Documents" folder with Puppeteer initialised via "npm install puppeteer" command in "My Documents"
+4. node_modules must be present in the "My Documents" folder with Puppeteer initialised via "npm install puppeteer" command via command prompt in "My Documents"
 5. MRN_archives folder must be created in the root folder of AHK (usually the Desktop if not using it with a shortcut).  This is where the new mrn.xlsx files will be created.
 Call this function by hitting Ctrl + Shift + W while a TrakCare window is open with a patient's result.  AHK will copy the MRN to the clipboard and pass this variable to the JavaScript function (SavePatientEPR.js) to be scraped.  One can continue with other work or continue signing once the Node window has opened.
 See the Puppeteer documentation online for more info on the web scraping technique or see my other data extraction script as this is basically a repurposed script from that project.
+
+# More button
+This opens a small window which includes an edit box which can take an Episode or MRN and perform various functions such as:
+
+1 Open the form of an episode on equation document viewer
+2. Open MRN number in EPR view (needs the MRN prefix to the MRN number)
+3. Locate an episode's storage position.
+4. Open the episode in Patient Entry - Single window (Single window needs to be closed for this to work)
+5. Extract a whole patient's cumulative results to an Excel sheet - needs Node and Puppeteer installed with the "SavePatientEPR.js" script in your My Documents folder.  Speak to me if you need more info on this or follow the steps in above section "EPR to Excel" - the same function is used for this button.
+6. Open various "free-text /F6 comments" such as SPE, IFE, HISTO, UOA (others coming soon).
+
+There is no field validation option in the edit box, yet, thus it’s your responsibility to ensure you enter the correct type of identifier into the edit box, either an Episode or MRN, whichever is applicable.
+In version 1.11 I have updated to add a VPN button which should open the Shrewsoft VPN app, use your saved Citrix username and Password and log in – I haven’t tested it on other PC’s other than my PC at home, so use with caution, and report issues please.
 
 
 # Known Errors / Improvements to be made
