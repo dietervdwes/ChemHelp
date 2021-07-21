@@ -14,6 +14,7 @@ SetTitleMatchMode, 2
 SetDefaultMouseSpeed, 0
 SetMouseDelay, 0
 SetWinDelay, 500
+^SPACE::  Winset, Alwaysontop, , A
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;    Add Buttons ;;;;;;;;;;;;;;;;;;
@@ -375,6 +376,46 @@ else
     EpResultSingle()
     Return
     }
+
+;------------------------------------------                                           Ctrl+R Navigates to result entry for episode
+ButtonRESULTENTRY:
+WinActivate, Medical Validation :   (Authorise By Episode)
+ 
+#IfWinActive, Medical Validation :   (Authorise By Episode)
+!r::
+EpMedVal()
+sleep, 200
+WinActivate Medical Validation :   (Authorise By Episode)
+sleep, 200
+   send, {altdown}<{altup}
+sleep, 200
+ 
+if !WinExist("Result Entry, , Result Entry - Verify")
+{
+                If !WinActive(" NHLS,")
+    WinActivate,  NHLS, 
+                WinWaitActive,  NHLS, 
+                Sleep, 100
+                Send, a{TAB}
+                Send, Result Entry{Enter}
+                WinWaitActive, Result Entry  
+    sleep, 200
+}
+ 
+ 
+{
+WinActivate, Result Entry, , Result Entry - Verify 
+WinWaitActive, Result Entry, , Result Entry - Verifiy
+sleep, 200
+send, {AltDown}l{AltUp}
+sleep, 200
+send, {CtrlDown}v{CtrlUp}
+sleep, 300
+send, {Enter}
+sleep, 400
+}
+return
+#IfWinActive
 
 
 ;-------------------------                                                                  Alt+P Enter PHONC
