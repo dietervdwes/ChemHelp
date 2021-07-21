@@ -55,6 +55,8 @@ Alt + E (or “Episode” button on the app window): Opens a new text box to ent
 
 Alt + P: From within “Medical Validation”, copies the episode number and navigates to Result Entry window to enter or add the PHONC.  This is also useful to easily navigate to “Result Entry” window from within “Medical Validation”, even when a PHONC is not due for entry.
 
+Alt + R: From within “Medical Validation”, copies the episode number and navigates to Result Entry window.
+
 Ctrl + Alt + P: From within “Medical Validation”, copies the episode number and navigates to Result Entry window to add a CCOM and put a standard comment with a link for Dr. to update details.
 
 Shift + Alt + P: Enable Proxy (via Registry)
