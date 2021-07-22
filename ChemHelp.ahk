@@ -324,7 +324,7 @@ sleep, 300
 SetTimer, refreshtimer, 600000 ;every 10 minutes
 ;SetTimer, refreshtimer, 300000 ;every 5 minutes
 ;SetTimer, refreshtimer, 5000 ;every 10 sec
-MsgBox, 1, , Timer has been set.`nThis Message will disappear automatically in 2 seconds, 2
+;MsgBox, 1, , Timer has been set.`nThis Message will disappear automatically in 2 seconds, 2
 Return
 
 ;This is the script to click refresh on Lab Results verify window. 
