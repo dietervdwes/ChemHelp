@@ -15,7 +15,7 @@ SetTitleMatchMode, 2
 SetDefaultMouseSpeed, 0
 SetMouseDelay, 0
 SetWinDelay, 500
-^SPACE::  Winset, Alwaysontop, , A
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;    Add Buttons ;;;;;;;;;;;;;;;;;;
@@ -1897,6 +1897,9 @@ Return
 ;send, {altdown}{F4 down}{F4 up}{altup}
 ;sleep, 100
 ;Return
+
+^SPACE::  Winset, Alwaysontop, , A
+Return
 
 Escape::Reload
 ;ExitApp
