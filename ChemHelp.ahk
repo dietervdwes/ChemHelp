@@ -1,4 +1,4 @@
-;ChemHelp v.1.12.1 - updated 03-08-2021
+;ChemHelp v.1.12.2 - updated 30-08-2021
 ;Written by Dieter van der Westhuizen 2018-2021
 ;Contributor(s): Cameron Francis
 ;Inspired from TrakHelper by Chad Centner
@@ -1628,6 +1628,7 @@ Return
 Samples with high total protein concentrations >16.8 g/L will not be run due to the increased likelihood of false negative results
 )
 ::CLINCONT::Clinician contact details may not be coded in our database.  Please go to the link below to update clinician contact details:`ntinyurl.com/nhls-update
+::POLYG::Polyclonal hypergammaglobulinemia is present at
 ::text1::
 (
 Any text
