@@ -1623,6 +1623,7 @@ Return
 ::NORMP::Normal protein electrophoresis pattern.  No monoclonal peaks are visible. The gamma region measures _ g/L (8-14 g/L). `nIf the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended.
 ::NEPHR::Hypoalbuminaemia is present.  The alpha-2 (macroglobulin) region is significantly increased at _ g/L (5-9 g/L).  The gamma region measures _ g/L (8-14 g/L). No monoclonal peaks are visible. `nThis pattern suggests nephrotic syndrome. If the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended. 
 ::A-1::The alpha-1 peak is biphasic, suggesting alpha-1-antitrypsin heterozygosity.
+::ARRCOM::Unable to calculate the aldosterone:renin ratio due to the upper / lower measring limit of aldosterone / renin, but the ratio is </> _.
 ::CSFELEC::
 (Total protein concentration……………   g/L
 Samples with high total protein concentrations >16.8 g/L will not be run due to the increased likelihood of false negative results
