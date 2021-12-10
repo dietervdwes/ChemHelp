@@ -1,7 +1,19 @@
-;ChemHelp v.1.12.2 - updated 30-08-2021
+;ChemHelp v.1.12 - updated 10-12-2021
 ;Written by Dieter van der Westhuizen 2018-2021
-;Contributor(s): Cameron Francis
 ;Inspired from TrakHelper by Chad Centner
+
+/* Changes from previous version 1.11 added and to be incorporated into Github
+1. added 2 columns to the extraction script: branch and user_site which should be updated on Excel template and uploaded.
+2. Added Button AutoA (need to uncomment it to get it active - use with caution)
+3. Increased FPSA test set maintenance opening wait time
+4. Added mousewheel settings for Cumulative view window - useful when doing SPE's by "F3" function viewing previous results (on Tuesdays).
+5. Added comment: ::IMMFIX::Immunofixation will be performed.  See result below, to follow.
+6. Added comment: ::CTT::Close to target. Stable.
+7. Added rSPE: to place SPE on hold, then refer the result to Chem Registrar VQ list so it is visible.
+8. Added UPE and UIFE buttons in the more menu (lines)
+9. Removed messagebox after dCDUM button pressed.
+10. Changed EPR URL.
+*/
 
 #SingleInstance, force
 ;#NoTrayIcon
@@ -17,23 +29,24 @@ SetMouseDelay, 0
 SetWinDelay, 500
 
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;    Add Buttons ;;;;;;;;;;;;;;;;;;
-Gui, Add, button, x2 y2 w40 h20 ,Log-on
+Gui, Add, button, x2 y2 w40 h20, Log-on
 Gui, Add, button, x44 y2 w40 h20, Mobile
-Gui, add, button,x2 y22 w30 h20  ,Form
-Gui, Add, button, x2 y42 w28 h20  ,EPR
+Gui, add, button,x2 y22 w30 h20, Form
+;Gui, add, button,x34 y22 w35 h20, AutoA
+Gui, Add, button, x2 y42 w28 h20, EPR
 Gui, Add, button, x30 y42 w45 h20, EPRxlsx
-Gui, Add, button, x2 y64 w33 h20  ,FPSA
+Gui, Add, button, x2 y64 w33 h20, FPSA
 Gui, Add, button, x36 y64 w45 h20, dCDUM
-Gui, Add, button, x2 y86 w45 h20  ,Verified
-Gui, Add, button, x2 y108 w57 h20  ,KeepOpen
-Gui, Add, button, x60 y108 w20 h20  ,Ex
-Gui, Add, button, x2 y130 w36 h20  ,More
+Gui, Add, button, x2 y86 w43 h20, Verified
+Gui, Add, button, x46 y86 w35 h20, rFix
+Gui, Add, button, x2 y108 w57 h20, KeepOpen
+Gui, Add, button, x60 y108 w20 h20, Ex
+Gui, Add, button, x2 y130 w36 h20, More
 Gui, Add, button, x40 y130 w36 h20, VPN
 ;Gui, Add, button, x40 y130 w45 h20, ExMRN
-Gui, Add, button, x2 y152 w32 h20 ,Close
-Gui, Add, button, x45 y152 w20 h20 ,_i
+Gui, Add, button, x2 y152 w32 h20, Close
+Gui, Add, button, x45 y152 w20 h20, _i
 ;Gui, Add, Button, x6 y17 w100 h30 , Ok
 ;Gui, Add, Button, x116 y17 w100 h30 , Cancel
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;   Set Window Options   ;;;;;;;;;;;;;;
@@ -41,7 +54,7 @@ Gui, Add, button, x45 y152 w20 h20 ,_i
 Gui, -sysmenu +AlwaysOnTop
 Gui, Show, , ChemHelp1.12
 WinGetPos,,,,TrayHeight,ahk_class Shell_TrayWnd,,,
-height := A_ScreenHeight-270
+height := A_ScreenHeight-400
 width := A_ScreenWidth-88
 Gui, Margin, 0, 0
 ;Gui, Add, Picture, x0 y0 w411 h485, picture.png
@@ -165,7 +178,9 @@ send, {TAB down}{TAB up}
 sleep, 200
 send, %citrix_password%
 sleep, 300
-send, {Return}
+send, {Enter}
+WinWaitActive, Citrix XenApp - Applications - 
+WinWaitActive, Citrix XenApp - Applications - 
 sleep, 3000
 /*
 Loop %tabs_citrix%
@@ -175,47 +190,47 @@ Loop %tabs_citrix%
     Sleep 80  ;      The number of milliseconds between keystrokes (or use SetKeyDelay).
 }
 */
-ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_big100.PNG
+ImageSearch, FoundX, FoundY, 0,0,3000,2000, %A_MyDocuments%\trakcare_icons\trakcarelab_big100.PNG
 if (ErrorLevel = 2)
     MsgBox Could not conduct the search for the TrakCare Icon. Possibly the files in the folder trakcare_icons is missing in your "Documents" folder.
 else if (ErrorLevel = 1)
-    ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_big095.PNG
+    ImageSearch, FoundX, FoundY, 0,0,3000,2000, %A_MyDocuments%\trakcare_icons\trakcarelab_big095.PNG
     if (ErrorLevel = 1)
-        ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_big090.PNG
+        ImageSearch, FoundX, FoundY, 0,0,3000,2000, %A_MyDocuments%\trakcare_icons\trakcarelab_big090.PNG
         if (ErrorLevel = 1)
-            ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_big085.PNG
+            ImageSearch, FoundX, FoundY, 0,0,3000,2000, %A_MyDocuments%\trakcare_icons\trakcarelab_big085.PNG
             if (ErrorLevel = 1)
-                ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_big080.PNG
+                ImageSearch, FoundX, FoundY, 0,0,3000,2000, %A_MyDocuments%\trakcare_icons\trakcarelab_big080.PNG
                 if (ErrorLevel = 1)
-                    ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_big105.PNG
+                    ImageSearch, FoundX, FoundY, 0,0,3000,2000, %A_MyDocuments%\trakcare_icons\trakcarelab_big105.PNG
                     if (ErrorLevel = 1)
-                        ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_big110.PNG
+                        ImageSearch, FoundX, FoundY, 0,0,3000,2000, %A_MyDocuments%\trakcare_icons\trakcarelab_big110.PNG
                         if (ErrorLevel = 1)
-                            ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_big115.PNG
+                            ImageSearch, FoundX, FoundY, 0,0,3000,2000, %A_MyDocuments%\trakcare_icons\trakcarelab_big115.PNG
                             if (ErrorLevel = 1)
-                                ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_big120.PNG
+                                ImageSearch, FoundX, FoundY, 0,0,3000,2000, %A_MyDocuments%\trakcare_icons\trakcarelab_big120.PNG
                                 if (ErrorLevel = 1)
-                                    ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_big125.PNG
+                                    ImageSearch, FoundX, FoundY, 0,0,3000,2000, %A_MyDocuments%\trakcare_icons\trakcarelab_big125.PNG
 if (ErrorLevel = 1)
-    ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_small100.PNG
+    ImageSearch, FoundX, FoundY, 0,0,3000,2000, %A_MyDocuments%\trakcare_icons\trakcarelab_small100.PNG
 if (ErrorLevel = 1)
-    ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_small095.PNG
+    ImageSearch, FoundX, FoundY, 0,0,3000,2000, %A_MyDocuments%\trakcare_icons\trakcarelab_small095.PNG
     if (ErrorLevel = 1)
-        ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_small090.PNG
+        ImageSearch, FoundX, FoundY, 0,0,3000,2000, %A_MyDocuments%\trakcare_icons\trakcarelab_small090.PNG
         if (ErrorLevel = 1)
-            ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_small085.PNG
+            ImageSearch, FoundX, FoundY, 0,0,3000,2000, %A_MyDocuments%\trakcare_icons\trakcarelab_small085.PNG
             if (ErrorLevel = 1)
-                ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_small080.PNG
+                ImageSearch, FoundX, FoundY, 0,0,3000,2000, %A_MyDocuments%\trakcare_icons\trakcarelab_small080.PNG
                 if (ErrorLevel = 1)
-                    ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_small105.PNG
+                    ImageSearch, FoundX, FoundY, 0,0,3000,2000, %A_MyDocuments%\trakcare_icons\trakcarelab_small105.PNG
                     if (ErrorLevel = 1)
-                        ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_small110.PNG
+                        ImageSearch, FoundX, FoundY, 0,0,3000,2000, %A_MyDocuments%\trakcare_icons\trakcarelab_small110.PNG
                         if (ErrorLevel = 1)
-                            ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_small115.PNG
+                            ImageSearch, FoundX, FoundY, 0,0,3000,2000, %A_MyDocuments%\trakcare_icons\trakcarelab_small115.PNG
                             if (ErrorLevel = 1)
-                                ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_small120.PNG
+                                ImageSearch, FoundX, FoundY, 0,0,3000,2000, %A_MyDocuments%\trakcare_icons\trakcarelab_small120.PNG
                                 if (ErrorLevel = 1)
-                                    ImageSearch, FoundX, FoundY, 336,280, 1241, 850, %A_MyDocuments%\trakcare_icons\trakcarelab_small125.PNG
+                                    ImageSearch, FoundX, FoundY, 0,0,3000,2000, %A_MyDocuments%\trakcare_icons\trakcarelab_small125.PNG
 else if (ErrorLevel = 1)
 MsgBox TrakCare Icon could not be found on the screen.
 else
@@ -377,46 +392,6 @@ else
     EpResultSingle()
     Return
     }
-
-;------------------------------------------                                           Ctrl+R Navigates to result entry for episode
-ButtonRESULTENTRY:
-WinActivate, Medical Validation :   (Authorise By Episode)
- 
-#IfWinActive, Medical Validation :   (Authorise By Episode)
-!r::
-EpMedVal()
-sleep, 200
-WinActivate Medical Validation :   (Authorise By Episode)
-sleep, 200
-   send, {altdown}<{altup}
-sleep, 200
- 
-if !WinExist("Result Entry, , Result Entry - Verify")
-{
-                If !WinActive(" NHLS,")
-    WinActivate,  NHLS, 
-                WinWaitActive,  NHLS, 
-                Sleep, 100
-                Send, a{TAB}
-                Send, Result Entry{Enter}
-                WinWaitActive, Result Entry  
-    sleep, 200
-}
- 
- 
-{
-WinActivate, Result Entry, , Result Entry - Verify 
-WinWaitActive, Result Entry, , Result Entry - Verifiy
-sleep, 200
-send, {AltDown}l{AltUp}
-sleep, 200
-send, {CtrlDown}v{CtrlUp}
-sleep, 300
-send, {Enter}
-sleep, 400
-}
-return
-#IfWinActive
 
 
 ;-------------------------                                                                  Alt+P Enter PHONC
@@ -704,7 +679,7 @@ IfWinActive, Result Entry - Single -
 {
 MRNSingle()
 txt := Clipboard
-url := "http://trakdb-prod.nhls.ac.za:57772/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=" . txt
+url := "http://trakdb-prod.nhls.ac.za/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=" . txt
 run, %url%
 sleep, 800
 WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
@@ -715,7 +690,7 @@ else IfWinActive, Medical Validation :   (Authorise By Episode)
 {
 MRNMedVal()
 txt := Clipboard
-url := "http://trakdb-prod.nhls.ac.za:57772/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=" . txt
+url := "http://trakdb-prod.nhls.ac.za/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=" . txt
 run, %url%
 sleep, 800
 WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
@@ -726,7 +701,7 @@ else IfWinActive, Result Verify - Single -
 {
 MRNResultVerSingle()
 txt := Clipboard
-url := "http://trakdb-prod.nhls.ac.za:57772/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=" . txt
+url := "http://trakdb-prod.nhls.ac.za/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=" . txt
 run, %url%
 sleep, 800
 WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
@@ -805,8 +780,10 @@ sleep, 200
 send, {altdown}d{altup}
 sleep, 200
 send, s
-sleep, 200
+sleep, 1000
+WinActivate, Test Set Maintenance
 WinWaitActive, Test Set Maintenance
+sleep, 1200
 ImageSearch, FoundX, FoundY, 15,86, 523, 379, %A_MyDocuments%\cdum.png
 if (ErrorLevel = 2)
     MsgBox Could not conduct the search for CDUM. Possibly the file cdum.png is missing in "My Documents" folder.
@@ -826,9 +803,11 @@ send, FPSA
 sleep, 200
 send, {tab down}{tab up}
 send, {enter}
+sleep, 200
+send, {AltDown}o{AltUp}
 Return
 
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;                                          Button dCDUM
 ButtondCDUM:
 WinActivate, Medical Validation :   (Authorise By Episode)
 WinWaitActive, Medical Validation :   (Authorise By Episode)
@@ -851,12 +830,58 @@ else
     send, {AltDown}d{AltUp}
 sleep, 300
 WinClose, Test Set Maintenance
-MsgBox, Please confirm that CDUM2 has been removed.
+;MsgBox, Please confirm that CDUM2 has been removed.
 Return
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;                                          Button rFix
+ButtonrFix:
+send, {AltDown}{Escape}{AltUp}
+#IfWinActive Result Entry - Single -
+    send, {AltDown}u{AltUp}
+    sleep, 1200
+    send, {AltDown}2{AltUp}
+    sleep, 300
+    send, s
+    sleep, 300
+    WinActivate, Test Set Maintenance
+    sleep, 100
+    MouseClick, Left, 830, 308 
+    sleep, 100
+    send, IFE
+    sleep, 200
+    send, {tab down}{tab up}
+    send, {enter}
+    sleep, 300
+    WinClose, Test Set Maintenance
+    sleep, 800
+    send, {Alt}
+    sleep, 400
+    send, 2
+    sleep, 400
+    send, n
+    sleep, 500
+    send, {AltDown}1{AltUp}
+    sleep, 300
+    send, f
+    sleep, 300
+    WinWaitActive, Refer To Verification Queue
+    WinActivate, Refer To Verification Queue
+    sleep, 300
+    MouseClick, Left, 429, 111
+    sleep, 500
+    MouseClick, Left, 429, 165
+    sleep, 500
+    send, {AltDown}o{AltUp}
+    sleep, 500
+    WinClose, Result Entry - Single
+    return
+#IfWinActive
+MsgBox, Result Entry - Single window is not active.
+return
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;                                                               Button Verified to insert staff note "Transcription Verified"  
 ButtonVerified:
 sleep, 200
-send, !{Tab}
+send, {AltDown}{Escape}{AltUp}
 sleep, 200
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;                                                                Alt + V for Staff note in Med Val or Single: Transcription Verified 
 
@@ -1100,6 +1125,15 @@ mouseclick, left, 547 , 65, 1
 Return
 #IfWinActive
 
+#IfWinActive Cumulative View - 
+WheelDown::
+mouseclick, left, 993 , 670, 1
+Return
+
+WheelUp::
+mouseclick, left, 993 , 208, 1
+Return
+#IfWinActive
 
 ;                                                        ALT-RIGHT CLICK ALT MENU: cobbled together somehow, by Samuel Murray - 26 May 2018, edited by Dieter (18/09/2019)
 ;;;;;;                                    for testing: Episode Number: SA01912457
@@ -1484,10 +1518,12 @@ Loop, read, extract_list.csv, ;output_list.txt ; output_list.txt is the file to 
     begin_date := LineArray[1]
     end_date := LineArray[2]
     loc_prov := LineArray[3]
-    test_set_test_item := LineArray[4]
-    email := LineArray[5]
-    non_reportable := LineArray[6]
-    sort_direction := LineArray[7]
+    branch := LineArray[4]
+    user_site := LineArray[5]
+    test_set_test_item := LineArray[6]
+    email := LineArray[7]
+    non_reportable := LineArray[8]
+    sort_direction := LineArray[9]
   sleep, 2000
    if !WinExist("Monthly Statistics") ;The exclamation mark before the WinExist specifies the negative of the statement, i.e. if win"doesnot"exist, execute the function below it in curly brackets.
     {
@@ -1535,21 +1571,36 @@ Loop, read, extract_list.csv, ;output_list.txt ; output_list.txt is the file to 
   sleep, 500
   send, %loc_prov% ; Location code (province)
   sleep, 500
-  send, {Down}
+  send, {Down} 
   sleep, 1000
-  loop, 8
+  send, {Tab}
+  sleep, 500
+  send, %branch%
+  ;send, {Down} ;Uncomment this if branch is present
+  sleep, 1000
+  send, {Tab}
+  sleep, 500
+  send, %user_site%
+  ;send, {Down}  ;Uncomment this if province is present
+  sleep, 1000
+  ;send, {Tab} ;Uncomment this tab if above user site is present.
+  sleep, 500
+  loop, 6
     {
         send, {Tab}
         sleep, 200
     }
   send, %test_set_test_item%
+  sleep, 200
+  send, {Tab}
   sleep, 500
-  loop, 9
-    {
-        send, {Tab}
-        sleep, 200
-    }
-  send, {Space}
+  #IfWinActive, CLNSTATLIST
+  sleep, 1000
+  send, {Enter}
+  WinWaitClose, CLNSTATLIST
+  #IfWinActive
+  sleep, 1000
+  MouseClick, Left, 470, 533
   sleep, 500
   send, {Tab}
   sleep, 500
@@ -1609,27 +1660,52 @@ settimer, refreshtimer, 600000
   tooltip    ; remove the tooltip
 }
 Return
+
+ButtonAutoA: ;Use this with extreme caution - it will auto-authorize samples. Useful for a batch processing but shouldn't be used if you don't know what you're doing.
+MsgBox, Do not use this feature if you don't know what you're doing.  Hit ESC immediately if you don't know what this feature is.
+WinActivate, Medical Validation
+WinWaitActive, Medical Validation
+loop, 100
+    {
+        Send, {AltDown}a{AltUp}
+        sleep, 800
+        PixelGetColor, color, 105, 229
+        While !(color = 0xD1B499)
+                {
+                PixelGetColor, color, 105, 229
+                ToolTip, Color is %color%
+                sleep, 200
+                Tooltip
+                }
+        sleep, 1500
+    }
+Return
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;                                                                   SPE canned text 
 
 ::INFLAM::The alpha-1, alpha-2 and beta-2 (complement) regions are elevated. The gamma region measures _ g/L (8 - 14 g/L). `nNo monoclonal peaks are visible. This pattern suggests an inflammatory process.  `nIf the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended.
-::INFLAMP::The alpha-1, alpha-2 and beta-2 (complement) regions are elevated and there is a polyclonal hypergammaglobulinaemia at  g/L (8 - 14 g/L). `nNo monoclonal peaks are visible. This pattern suggests an inflammatory process.  `nIf the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended.
+::INFLAMP::The alpha-1, alpha-2 and beta-2 (complement) regions are elevated and there is a polyclonal hypergammaglobulinaemia at  g/L (8 - 14 g/L). `nNo monoclonal peaks are visible. This pattern suggests a chronic inflammatory process.  `nIf the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended.
 ::INFLAMS::The alpha-1, -2 and beta-2 (complement) region is elevated and the gamma region measures _ g/L (8 - 14 g/L). `nNo monoclonal peaks are visible. This pattern suggests an inflammatory process.  `nIf the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended.
 ::PREV::The previously typed monoclonal Ig_ persists in _ gamma at _ g/L.  Immunoparesis is _.
 ::PROM::A prominent peak is present in the mid-gamma region measuring g/L. The remainder of the gamma region measures g/L (8-14 g/L).  Immunotyping will be performed. Please see results below, to follow.
 ::SURINE::Please send urine (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) for Bence Jones protein electrophoresis and serum for free light chain analysis.
 ::BGB::Beta-gamma bridging is present. This is consistent with a chronic inflammatory process associated with an IgA response.  Causes may include cirrhosis, and cutaneous or mucosal inflammation.
 ::SUSP::If the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended.
+::SUSPPEAK::A suspicious peak is present in the _-gamma region measuring _ g/L. `nThe rest of the gamma region measures _ g/L (8-14 g/L).`nImmunofixation will be performed.  See result below, to follow. 
 ::REPEATSPE::Repeat SPE is recommended in 3-6 months or when the inflammatory condition has subsided.
 ::NORMP::Normal protein electrophoresis pattern.  No monoclonal peaks are visible. The gamma region measures _ g/L (8-14 g/L). `nIf the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended.
 ::NEPHR::Hypoalbuminaemia is present.  The alpha-2 (macroglobulin) region is significantly increased at _ g/L (5-9 g/L).  The gamma region measures _ g/L (8-14 g/L). No monoclonal peaks are visible. `nThis pattern suggests nephrotic syndrome. If the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended. 
 ::A-1::The alpha-1 peak is biphasic, suggesting alpha-1-antitrypsin heterozygosity.
+::IMMFIX::Immunofixation will be performed.  See result below, to follow.
+::HYPOG::Hypogammaglobulinemia is present at _ g/L (8-14 g/L).`nImmunofixation will be performed. See results below, to follow.
 ::ARRCOM::Unable to calculate the aldosterone:renin ratio due to the upper / lower measring limit of aldosterone / renin, but the ratio is </> _.
 ::CSFELEC::
-(Total protein concentration……………   g/L
-Samples with high total protein concentrations >16.8 g/L will not be run due to the increased likelihood of false negative results
+(
+CSF electrophoresis:
+Samples with high total protein concentrations (>16.8 g/L) will not be run due to the increased likelihood of false negative results.
 )
-::CLINCONT::Clinician contact details may not be coded in our database.  Please go to the link below to update clinician contact details:`ntinyurl.com/nhls-update
 ::POLYG::Polyclonal hypergammaglobulinemia is present at
+::CLINCONT::Clinician contact details may not be coded in our database.  Please go to the link below to update clinician contact details:`ntinyurl.com/nhls-update
 ::text1::
 (
 Any text
@@ -1684,6 +1760,8 @@ South African Doping Control Laboratory - SADoCoL
 ::STN::Stable negative bias.
 ::STP::Stable positive bias.
 ::CTM::Close to mean.  Stable.
+::CTT::Close to target. Stable.
+::FreeT4comment::Unfortunately we were unable to get hold of the attending clinician for the free-T4 result which has changed after re-analysis.
 
 ;If you have a long name like me, you can enter a shortcode like below, without the preceeding ";".  
 ;Type "d1" then space or tab and the text as coded will be typed automatically.
@@ -1732,25 +1810,29 @@ ButtonMore:
 
 Gui, New , , ChemHelp
 Gui, Add, Edit, r1 vEpisode w135, EpisodeOrMRN
-Gui, Add, Button, gMoreScript1, [&1] Open form on Equation
-Gui, Add, Button, gMoreScript2, [&2] Open MRN in EPR view
-Gui, Add, Button, gMoreScript3, [&3] Locate Episode Storage position
-Gui, Add, Button, gMoreScript4, [&4] Open in Patient Entry 
-Gui, Add, Button, gMoreScript5, [&5] Extract MRN to ExcelFile
-Gui, Add, Button, gMoreScript6, [&6] SPE Comment
-Gui, Add, Button, gMoreScript7, [&7] IFE Comment
-Gui, Add, Button, gMoreScript8, [&8] Histo Comment
-Gui, Add, Button, gMoreScript9, [&9] UOA Comment
-Gui, Add, Button, x150 y265 w35 h20 gExitApp,  Close 
+Gui, Add, Button, gMoreScript01, [&1] Open form on Equation
+Gui, Add, Button, gMoreScript02, [&2] Open MRN in EPR view
+Gui, Add, Button, gMoreScript03, [&3] Locate Episode Storage position
+Gui, Add, Button, gMoreScript04, [&4] Open in Patient Entry 
+Gui, Add, Button, gMoreScript05, [&5] Extract MRN to ExcelFile
+Gui, Add, Button, gMoreScript06, [&6] SPE Comment
+Gui, Add, Button, gMoreScript07, [&7] IFE Comment
+Gui, Add, Button, gMoreScript08, [&8] Histo Comment
+Gui, Add, Button, gMoreScript09, [&9] UOA Comment
+Gui, Add, Button, x106 y178 w100 gMoreScript10, [&10] UPE Comment
+Gui, Add, Button, x102 y207 w100 gMoreScript11, [&11] UIFE Comment
+
+
+Gui, Add, Button, x150 y265 w45 h20 gExitApp,  Restart 
 ;Gui, -Border
 WinGetPos,,,,TrayHeight,ahk_class Shell_TrayWnd,,,
-ypos := A_ScreenHeight-370
-xpos := A_ScreenWidth-290
+ypos := A_ScreenHeight-500
+xpos := A_ScreenWidth-320
 Gui, Margin, 0, 0
-Gui, Show, x%xpos% y%ypos% w190, ChemHelp - More
+Gui, Show, x%xpos% y%ypos% w220 h400, ChemHelp - More
 return
 
-MoreScript1:
+MoreScript01:
         Gui, Submit
 		url := "http://172.22.4.40/multipdfsearch.php?file=" . Episode . ""
 		run, %url%
@@ -1758,55 +1840,69 @@ MoreScript1:
 		WinMove, Internet Explorer ahk_class IEFrame,, A_ScreenWidth-537, 0, 545, A_ScreenHeight-25
 		Return
 		
-MoreScript2:
+MoreScript02:
         Gui, Submit
-		url := "http://trakdb-prod.nhls.ac.za:57772/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=" . Episode . ""
+		url := "http://trakdb-prod.nhls.ac.za/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=" . Episode . ""
 		run, %url%
 		sleep, 800
 		WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
 		Return
-MoreScript3:
+MoreScript03:
 		Gui, Submit
 		sleep, 100
         Specinfolookup(Episode)
 		Return
-MoreScript4:
+MoreScript04:
         Gui, Submit
 		sleep, 100
         OpenEpInPatientEntry(Episode)
 		Return
-MoreScript5:
+MoreScript05:
         Gui, Submit
         run node %A_MyDocuments%\SavePatientEPR.js %Episode%
         if (ErrorLevel = "ERROR")
             MsgBox There was an error, likely Node is not installed.
         else
         Return
-MoreScript6:
+MoreScript06:
         Gui, Submit
-		url := "http://trakdb-prod.nhls.ac.za:57772/csp/reporting/eprajax.csp?chunk=" . Episode . "^C112^1^CF112^"
+		url := "http://trakdb-prod.nhls.ac.za/csp/reporting/eprajax.csp?chunk=" . Episode . "^C112^1^CF112^"
 		run, %url%
 		sleep, 800
 		WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
         Return
-MoreScript7:
+MoreScript07:
         Gui, Submit
-		url := "http://trakdb-prod.nhls.ac.za:57772/csp/reporting/eprajax.csp?chunk=" . Episode . "^C113^1^CF113^"
+		url := "http://trakdb-prod.nhls.ac.za/csp/reporting/eprajax.csp?chunk=" . Episode . "^C113^1^CF113^"
 		run, %url%
 		sleep, 800
 		WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
         Return
-MoreScript8:
+MoreScript08:
         Gui, Submit
-		url := "http://trakdb-prod.nhls.ac.za:57772/csp/reporting/eprajax.csp?chunk=" . Episode . "^A030^1^T^"
+		url := "http://trakdb-prod.nhls.ac.za/csp/reporting/eprajax.csp?chunk=" . Episode . "^A030^1^T^"
 		run, %url%
 		sleep, 800
 		WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
         Return
         Return
-MoreScript9: 
+MoreScript09: 
         Gui, Submit
-		url := "http://trakdb-prod.nhls.ac.za:57772/csp/reporting/eprajax.csp?chunk=" . Episode . "^C440^1^C3200^"
+		url := "http://trakdb-prod.nhls.ac.za/csp/reporting/eprajax.csp?chunk=" . Episode . "^C440^1^C3200^"
+		run, %url%
+		sleep, 800
+		WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
+        Return
+MoreScript10: 
+        Gui, Submit
+		url := "http://trakdb-prod.nhls.ac.za/csp/reporting/eprajax.csp?chunk=" . Episode . "%5EC323%5E1%5EC1245%5E"
+		run, %url%
+		sleep, 800
+		WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
+        Return
+MoreScript11: 
+        Gui, Submit
+		url := "http://trakdb-prod.nhls.ac.za/csp/reporting/eprajax.csp?chunk=" . Episode . "%5EC324%5E1%5EC1260%5E"
 		run, %url%
 		sleep, 800
 		WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
@@ -1899,9 +1995,6 @@ Return
 ;send, {altdown}{F4 down}{F4 up}{altup}
 ;sleep, 100
 ;Return
-
-^SPACE::  Winset, Alwaysontop, , A
-Return
 
 Escape::Reload
 ;ExitApp
