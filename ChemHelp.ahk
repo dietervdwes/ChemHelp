@@ -12,7 +12,8 @@
 7. Added rSPE: to place SPE on hold, then refer the result to Chem Registrar VQ list so it is visible.
 8. Added UPE and UIFE buttons in the more menu (lines)
 9. Removed messagebox after dCDUM button pressed.
-10. Changed EPR URL.
+10. Changed EPR URL - removed port number.
+11. Changed EPR URL - https for secure connection.
 */
 
 #SingleInstance, force
@@ -679,7 +680,7 @@ IfWinActive, Result Entry - Single -
 {
 MRNSingle()
 txt := Clipboard
-url := "http://trakdb-prod.nhls.ac.za/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=" . txt
+url := "https://trakdb-prod.nhls.ac.za/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=" . txt
 run, %url%
 sleep, 800
 WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
@@ -690,7 +691,7 @@ else IfWinActive, Medical Validation :   (Authorise By Episode)
 {
 MRNMedVal()
 txt := Clipboard
-url := "http://trakdb-prod.nhls.ac.za/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=" . txt
+url := "https://trakdb-prod.nhls.ac.za/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=" . txt
 run, %url%
 sleep, 800
 WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
@@ -701,7 +702,7 @@ else IfWinActive, Result Verify - Single -
 {
 MRNResultVerSingle()
 txt := Clipboard
-url := "http://trakdb-prod.nhls.ac.za/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=" . txt
+url := "https://trakdb-prod.nhls.ac.za/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=" . txt
 run, %url%
 sleep, 800
 WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
@@ -1842,7 +1843,7 @@ MoreScript01:
 		
 MoreScript02:
         Gui, Submit
-		url := "http://trakdb-prod.nhls.ac.za/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=" . Episode . ""
+		url := "https://trakdb-prod.nhls.ac.za/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=" . Episode . ""
 		run, %url%
 		sleep, 800
 		WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
@@ -1866,21 +1867,21 @@ MoreScript05:
         Return
 MoreScript06:
         Gui, Submit
-		url := "http://trakdb-prod.nhls.ac.za/csp/reporting/eprajax.csp?chunk=" . Episode . "^C112^1^CF112^"
+		url := "https://trakdb-prod.nhls.ac.za/csp/reporting/eprajax.csp?chunk=" . Episode . "^C112^1^CF112^"
 		run, %url%
 		sleep, 800
 		WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
         Return
 MoreScript07:
         Gui, Submit
-		url := "http://trakdb-prod.nhls.ac.za/csp/reporting/eprajax.csp?chunk=" . Episode . "^C113^1^CF113^"
+		url := "https://trakdb-prod.nhls.ac.za/csp/reporting/eprajax.csp?chunk=" . Episode . "^C113^1^CF113^"
 		run, %url%
 		sleep, 800
 		WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
         Return
 MoreScript08:
         Gui, Submit
-		url := "http://trakdb-prod.nhls.ac.za/csp/reporting/eprajax.csp?chunk=" . Episode . "^A030^1^T^"
+		url := "https://trakdb-prod.nhls.ac.za/csp/reporting/eprajax.csp?chunk=" . Episode . "^A030^1^T^"
 		run, %url%
 		sleep, 800
 		WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
@@ -1888,21 +1889,21 @@ MoreScript08:
         Return
 MoreScript09: 
         Gui, Submit
-		url := "http://trakdb-prod.nhls.ac.za/csp/reporting/eprajax.csp?chunk=" . Episode . "^C440^1^C3200^"
+		url := "https://trakdb-prod.nhls.ac.za/csp/reporting/eprajax.csp?chunk=" . Episode . "^C440^1^C3200^"
 		run, %url%
 		sleep, 800
 		WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
         Return
 MoreScript10: 
         Gui, Submit
-		url := "http://trakdb-prod.nhls.ac.za/csp/reporting/eprajax.csp?chunk=" . Episode . "%5EC323%5E1%5EC1245%5E"
+		url := "https://trakdb-prod.nhls.ac.za/csp/reporting/eprajax.csp?chunk=" . Episode . "%5EC323%5E1%5EC1245%5E"
 		run, %url%
 		sleep, 800
 		WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
         Return
 MoreScript11: 
         Gui, Submit
-		url := "http://trakdb-prod.nhls.ac.za/csp/reporting/eprajax.csp?chunk=" . Episode . "%5EC324%5E1%5EC1260%5E"
+		url := "https://trakdb-prod.nhls.ac.za/csp/reporting/eprajax.csp?chunk=" . Episode . "%5EC324%5E1%5EC1260%5E"
 		run, %url%
 		sleep, 800
 		WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
