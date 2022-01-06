@@ -71,10 +71,12 @@ Alt + F4: Closes any active window.
 
 Alt + Tab: Switches active windows.
 
-Double click on a text Episode eg. from an email then Alt + Right Click opens a Menu to open features with the episode.
+Double click on a text Episode eg. from an email (to highlight the episode, then Alt + Right Click opens a Menu to open features with the episode.
 
+# Buttons
 FPSA button on ChemHelp to add a Free PSA to the current episode and remove the CDUM2. (Requires the cdum.png file to be present in "My Documents" folder)
 dCDUM button removes the CDUM2 only.
+rFix button (request immunofixation) - if in Result Entry - Single window, it will 1. Place the episode on hold, 2. Add an immunofixation, 3. Refer the episode to the Chem - Registrar VQ list to make it visible to clinicians to prevent duplicate sample sending.
 
 Login button: Runs the login script 
 
