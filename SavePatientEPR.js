@@ -182,7 +182,7 @@ async function launchpuppeteer(MRNfromTrak){
             
             xlsx.utils.book_append_sheet(wb,datasheet);
             xlsx.utils.book_append_sheet(wb,ws_new_data);
-            xlsx.writeFile(wb,'./MRN_archives/' + filename + '.xlsx' );
+            xlsx.writeFile(wb,'./MRN_archives/' + filename + '.xlsx', {compression:true});
             console.log("Written to file: " + './' + filename + '.xlsx' )
         }catch(err){
             console.log(err)
