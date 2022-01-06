@@ -1,6 +1,7 @@
 //Written by Dieter van der Westhuizen
 //dietervdwes@gmail.com
 //09/12/2020
+//edited 2022-01-06 - changed url to https and removed port number in the url
 
 /*
 This script is intended to accept one parameter after calling it and passing that parameter to "Parameter1" which can be used to execute a function with.
@@ -30,7 +31,7 @@ let YMD = year + month + date
 var Parameter1 = process.argv[2];
 
 console.log("Scraping results of "+ Parameter1 );
-console.log("To close this script, active this window and hit 'Ctrl + C' or close the window.");
+console.log("To close this script, activate this window and hit 'Ctrl + C' or close the window.");
 console.log("You can continue with other tasks while this window is busy in the background.");
 
 
@@ -64,9 +65,9 @@ async function launchpuppeteer(MRNfromTrak){
     console.log("Starting to extract from EPR...")
     console.log(MRNfromTrak);
     async function getDataOnPage(mrn){
-        url = 'http://trakdb-prod.nhls.ac.za:57772/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=' + mrn
+        url = 'https://trakdb-prod.nhls.ac.za/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=' + mrn
         await page.goto(url, {waitUntil: 'networkidle2'});
-        //await page.goto('http://trakdb-prod.nhls.ac.za:57772/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=MRN78876108', {waitUntil: 'networkidle2'});
+        //await page.goto('http://trakdb-prod.nhls.ac.za/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=MRN78876108', {waitUntil: 'networkidle2'});
         
         //Now getting the Column Headers Episodes only
         const ColumnHeaders_episode = await page.$$eval('#ColHeaders tr', rows => {
