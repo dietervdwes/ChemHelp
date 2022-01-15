@@ -33,9 +33,12 @@ Alt + A: authorizes the episode.
 
 Alt + Q: Page up  
 
-Alt + Z: Page down.  (An automated mouse click on the first line accommodates the latter two functions)
+Alt + Z: Page down  (A quick automated mouse click on the first line of the verification window may accommodate the latter two functions)
 
 Alt + F (or “Form” button on the app window): Opens the scanned Form on Equation Document viewer via the default web browser and resizes the window to the right half of the screen if Internet Explorer is your default browser.
+
+Ctrl + Alt + F: Adds a Free-PSA and removes the CDUM.
+Ctrl + Alt + D: Removes a CDUM.
 
 Alt + W (or “EPR” button on the app window): Opens EPR in default web browser and maximizes the window. (Similar to clicking.)
 
@@ -57,7 +60,7 @@ Alt + P: From within “Medical Validation”, copies the episode number and nav
 
 Alt + R: From within “Medical Validation”, copies the episode number and navigates to Result Entry window.
 
-Ctrl + Alt + P: From within “Medical Validation”, copies the episode number and navigates to Result Entry window to add a CCOM and put a standard comment with a link for Dr. to update details.
+Ctrl + Alt + P: From within “Medical Validation”, copies the episode number and navigates to Result Entry window to add a CCOM and enter comment with a link for clinician to update contact details.
 
 Shift + Alt + P: Enable Proxy (via Registry)
 
