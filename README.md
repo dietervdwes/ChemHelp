@@ -13,13 +13,15 @@ NB: Please report any ideas or errors to dieter.vdwesthuizen@nhls.ac.za.  That w
 1.	Install AutoHotKey by downloading from this page: https://www.autohotkey.com/
 If you want to edit the script for use in your lab, then you will need an applicable text editor, see below.
 
-2.	Copy "ChemHelp.ahk" and "ChemHelpMobile.ahk" to local desktop or other convenient location on the local workstation
+2.	Download the folder with all files included and extract all contents including  "ChemHelp.ahk" and "ChemHelpMobile.ahk" to My Documents or a convenient location.  
+
+3.	Create a shortcut on your Desktop to "ChemHelp.ahk" and "ChemHelpMobile.ahk".
 
 3.	(Optional when wanting to use the Login button) 
-Copy the file chemhelp_settings.txt to your My Documents folder and replace the contents of each field in the file with your login details.  Replace the "18" in the file (last field) with the amount of {TAB} buttons it takes to navigate to the blue TrakCare icon after having logged into Citrix. (This is usually around 16-20 tabs, depending on how many bookmarks etc. you have and you will need to test this after manually logging into Citrix and counting how many times you need to press tab until the blue TrakCare icon highlights.  It is important that the chemhelp_settings.txt file (i.e. individual file and NOT the folder), be copied, to your "Documents" root folder.
+Copy the file chemhelp_settings.txt to your My Documents folder and replace the contents of each field in the file with your login details.  
 Important: ChemHelpMobile needs to be in the same folder as ChemHelp if you want to use the Mobile interface (like Teamviewer or Anydesk).
 
-4.	Double click "ChemHelp" which you’ve copied to your Desktop to launch ChemHelp.
+4.	Double click the ChemHelp shortcut which you’ve copied to your Desktop to launch ChemHelp.
 
 5.	(Optional) Although editing of the script in Notepad is possible, the following editor is recommended: Scite4AutoHotkey, downloadable from: http://fincs.ahk4.net/scite4ahk/.
 
@@ -38,11 +40,12 @@ Alt + Z: Page down.  (An automated mouse click on the first line accommodates th
 Alt + F (or “Form” button on the app window): Opens the scanned Form on Equation Document viewer via the default web browser and resizes the window to the right half of the screen if Internet Explorer is your default browser.
 
 Ctrl + Alt + F: Adds a Free-PSA and removes the CDUM.
+
 Ctrl + Alt + D: Removes a CDUM.
 
 Alt + W (or “EPR” button on the app window): Opens EPR in default web browser and maximizes the window. (Similar to clicking.)
 
-Alt + Shift + W: Saves the EPR to an Excel file in a folder "MRN_archives" which should be created in the root directory of ChemHelp.ahk (see EPR to Excel section below).
+Ctrl + Alt + W: Saves the EPR to an Excel file in a folder "MRN_archives" which should be created in the root directory of ChemHelp.ahk (see EPR to Excel section below).
 
 Alt + V (or “Verified” button on the app window): Opens Staff Notes and enter the text: "Transcription Verified."
 
@@ -52,7 +55,7 @@ Alt + B: Back one episode
 
 Alt + X: NeXt Episode
 
-Alt + N: Copy Episode Number to the clipboard. This only works from within Result Entry / Verify windows with the episode active.
+Alt + N: Copy Episode Number to the clipboard. This works from within Result Entry / Verify windows with the episode active.
 
 Ctrl + Alt + N / Ctrl + Alt + L - saves the episode number and the time in ChemHelp-directory\episode_log.txt
 
@@ -81,13 +84,21 @@ Double click on a text Episode eg. from an email (to highlight the episode, then
 # Buttons
 FPSA button on ChemHelp to add a Free PSA to the current episode and remove the CDUM2. (Requires the cdum.png file to be present in root\trakcare_icons folder)
 dCDUM button removes the CDUM2 only.
+
 rFix button (request immunofixation) - if in Result Entry - Single window, it will 1. Place the episode on hold, 2. Add an immunofixation, 3. Refer the episode to the Chem - Registrar VQ list to make it visible to clinicians to prevent duplicate sample sending.
+
 Log-on button: Runs the login script 
+
 Mobile button: Opens the ChemHelpMobile.ahk script from the root directory. This is useful when authorizing results from a mobile device
+
 Ex button runs a data extraction script
+
 Verified button inserts the staff note: "Transcription Verified."
+
 KeepOpen runs a script to refresh the VQ list in Result Verify window so TrakCare doesn't automatically log out.
+
 More button opens a few additional options (see "More" section below).
+
 The source code can be seen by right-clicking on ChemHelp and opening with a Text editor.  Of course you can customize your own version, should you wish, after copying the file to your PC.
 
 # Mouse Scroll Wheel
@@ -147,7 +158,7 @@ This opens a small window which includes an edit box which can take an Episode o
 6. Open various "free-text / F6 comments" such as SPE, IFE, HISTO, UOA (others coming soon).
 
 There is no field validation option in the edit box, yet, thus it’s your responsibility to ensure you enter the correct type of identifier (episode or MRN) into the edit box.
-In version 1.11 I have updated to add a VPN button which should open the Shrewsoft VPN app, use your saved Citrix username and Password and log in – I haven’t tested it on other PC’s other than my PC at home, so use with caution, and report issues please.
+In version 1.11 I have updated to add a VPN button which should open the Shrewsoft VPN app, use your saved Citrix username and Password and log in.
 
 
 # Known Errors / Improvements to be made
