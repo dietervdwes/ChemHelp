@@ -33,7 +33,7 @@ Alt + A: authorizes the episode.
 
 Alt + Q: Page up  
 
-Alt + Z: Page down  (A quick automated mouse click on the first line of the verification window may accommodate the latter two functions)
+Alt + Z: Page down.  (An automated mouse click on the first line accommodates the latter two functions)
 
 Alt + F (or “Form” button on the app window): Opens the scanned Form on Equation Document viewer via the default web browser and resizes the window to the right half of the screen if Internet Explorer is your default browser.
 
@@ -52,15 +52,17 @@ Alt + B: Back one episode
 
 Alt + X: NeXt Episode
 
-Alt + N: Copy Episode Number to the clipboard.
-
-Alt + E (or “Episode” button on the app window): Opens a new text box to enter an Episode number to open up the scanned form on Equation document viewer.
+Alt + N: Copy Episode Number to the clipboard. This only works from within Result Entry / Verify windows with the episode active.
 
 Alt + P: From within “Medical Validation”, copies the episode number and navigates to Result Entry window to enter or add the PHONC.  This is also useful to easily navigate to “Result Entry” window from within “Medical Validation”, even when a PHONC is not due for entry.
 
 Alt + R: From within “Medical Validation”, copies the episode number and navigates to Result Entry window.
 
-Ctrl + Alt + P: From within “Medical Validation”, copies the episode number and navigates to Result Entry window to add a CCOM and enter comment with a link for clinician to update contact details.
+Ctrl + Alt + N / Ctrl + Alt + L - saves the episode number and the time in ChemHelp-directory\episode_log.txt
+
+Ctrl + Alt + C: Screen Captures (screenshots) the active window into ChemHelp-directory\Screenshots\
+
+Ctrl + Alt + P: From within “Medical Validation”, copies the episode number and navigates to Result Entry window to add a CCOM and put a standard comment with a link for Dr. to update details.
 
 Shift + Alt + P: Enable Proxy (via Registry)
 
@@ -77,21 +79,22 @@ Alt + Tab: Switches active windows.
 Double click on a text Episode eg. from an email (to highlight the episode, then Alt + Right Click opens a Menu to open features with the episode.
 
 # Buttons
-FPSA button on ChemHelp to add a Free PSA to the current episode and remove the CDUM2. (Requires the cdum.png file to be present in "My Documents" folder)
+FPSA button on ChemHelp to add a Free PSA to the current episode and remove the CDUM2. (Requires the cdum.png file to be present in root\trakcare_icons folder)
 dCDUM button removes the CDUM2 only.
 rFix button (request immunofixation) - if in Result Entry - Single window, it will 1. Place the episode on hold, 2. Add an immunofixation, 3. Refer the episode to the Chem - Registrar VQ list to make it visible to clinicians to prevent duplicate sample sending.
-
-Login button: Runs the login script 
-
+Log-on button: Runs the login script 
+Mobile button: Opens the ChemHelpMobile.ahk script from the root directory. This is useful when authorizing results from a mobile device
 Ex button runs a data extraction script
-
+Verified button inserts the staff note: "Transcription Verified."
+KeepOpen runs a script to refresh the VQ list in Result Verify window so TrakCare doesn't automatically log out.
+More button opens a few additional options (see "More" section below).
 The source code can be seen by right-clicking on ChemHelp and opening with a Text editor.  Of course you can customize your own version, should you wish, after copying the file to your PC.
 
 # Mouse Scroll Wheel
 Mouse scroll wheel has been setup to work in some windows.
 
-# Hotstrings for reporting protein electrophoreses
-Note that this list can be edited by editing ChemHelp.ahk with a text editor and entering your own text in a similar format.  To learn how to edit these click here: https://www.autohotkey.com/docs/Hotstrings.htm
+# Hotstrings
+Note that this list can be edited by editing ChemHelp.ahk with a text editor and entering your own text in a similar format.  Follow this format: https://www.autohotkey.com/docs/Hotstrings.htm
 
 `::INFLAM::The alpha-1, -2 and beta-2 (complement) regions are elevated and there is a polyclonal hypergammaglobulinaemia at  g/L (8 - 14 g/L). No monoclonal peaks are visible. This pattern suggests an inflammatory process.  If the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended.
 
@@ -120,35 +123,37 @@ Note that this list can be edited by editing ChemHelp.ahk with a text editor and
 Any text
 Newline preserved in this way
 )
+
+d1::[sends your full_name as specified in the chemhelp_settings.txt file in the ChemHelp root folder.
 `
 # EPR to Excel
 This function uses a JavaScript webscraping technique via Node.js and Puppeteer to open the EPR in the background and save the patient's ePR to an Excel file.
 Requirements:
 1. Node.js must be installed on the PC.
-2. SavePatientEPR.js file must be present in "My Documents" folder
-3. package.json and package-lock.json must be present in "My Documents" folder
-4. node_modules must be present in the "My Documents" folder with Puppeteer initialised via "npm install puppeteer" command via command prompt in "My Documents"
-5. MRN_archives folder must be created in the root folder of AHK (usually the Desktop if not using it with a shortcut).  This is where the new mrn.xlsx files will be created.
+2. SavePatientEPR.js file must be present in ChemHelp root directory
+3. package.json and package-lock.json must be present in ChemHelp root directory
+4. node_modules must be present in ChemHelp root directory with Puppeteer initialised via "npm install puppeteer" command via command prompt in ChemHelp root directory. (This is not possible from within the NHLS network and your PC will need a connection other than NHLS-intranet when doing this - due to proxy servers blocking this update.)
+5. MRN_archives folder must be created in the root folder of ChemHelp.ahk.  This is where the new mrn.xlsx files will be created.
 Call this function by hitting Ctrl + Shift + W while a TrakCare window is open with a patient's result.  AHK will copy the MRN to the clipboard and pass this variable to the JavaScript function (SavePatientEPR.js) to be scraped.  One can continue with other work or continue signing once the Node window has opened.
 See the Puppeteer documentation online for more info on the web scraping technique or see my other data extraction script as this is basically a repurposed script from that project.
 
 # More button
 This opens a small window which includes an edit box which can take an Episode or MRN and perform various functions such as:
-1. Open the form of an episode on equation document viewer
+1. Open the form of an episode on equation document viewer (needs the configuration file "chemhelp_settings.txt" correctly formatted in the root directory with the Equation server IP of your lab).
 2. Open MRN number in EPR view (needs the MRN prefix to the MRN number)
 3. Locate an episode's storage position.
 4. Open the episode in Patient Entry - Single window (Single window needs to be closed for this to work)
-5. Extract a whole patient's cumulative results to an Excel sheet - needs Node and Puppeteer installed with the "SavePatientEPR.js" script in your My Documents folder.  Speak to me if you need more info on this or follow the steps in above section "EPR to Excel" - the same function is used for this button.
-6. Open various "free-text /F6 comments" such as SPE, IFE, HISTO, UOA (others coming soon).
+5. Extract a whole patient's cumulative results to an Excel sheet - needs Node and Puppeteer installed with the "SavePatientEPR.js" script in your ChemHelp root folder.  Speak to me if you need more info on this or follow the steps in above section "EPR to Excel" - the same function is used for this button.
+6. Open various "free-text / F6 comments" such as SPE, IFE, HISTO, UOA (others coming soon).
 
-There is no field validation option in the edit box, yet, thus it’s your responsibility to ensure you enter the correct type of identifier into the edit box, either an Episode or MRN, whichever is applicable.
+There is no field validation option in the edit box, yet, thus it’s your responsibility to ensure you enter the correct type of identifier (episode or MRN) into the edit box.
 In version 1.11 I have updated to add a VPN button which should open the Shrewsoft VPN app, use your saved Citrix username and Password and log in – I haven’t tested it on other PC’s other than my PC at home, so use with caution, and report issues please.
 
 
 # Known Errors / Improvements to be made
 
 ChemHelp was originally developed for use at Groote Schuur Hospital Chemical Pathology, but most functions should also be useable by other laboratories within the NHLS.
-Most functions, eg. the Form button (or Ctrl + F), can be adapted to work at other laboratories with their respective file- / pdf servers.
+Most functions, eg. the Form button (or Ctrl + F), can be adapted to work at other laboratories with their respective file- / pdf servers, such as the ECM. Currently the IP address of the Equation file server should be entered into the chemhelp_settings.txt file. 172.22.4.40 (GSH), 172.22.8.50 (RXH), 172.22.12.40 (TBH), 172.22.16.63 (?Green Point Lab)
 The ECM and interaction with it has not yet been configured, as we do not use the ECM server in the Western Cape.
 I am however keen to visit another lab (or have a Zoom session) to learn how this works and try to implement it to work on this system as well.
 
