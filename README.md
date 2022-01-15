@@ -54,15 +54,15 @@ Alt + X: NeXt Episode
 
 Alt + N: Copy Episode Number to the clipboard. This only works from within Result Entry / Verify windows with the episode active.
 
+Ctrl + Alt + N / Ctrl + Alt + L - saves the episode number and the time in ChemHelp-directory\episode_log.txt
+
 Alt + P: From within “Medical Validation”, copies the episode number and navigates to Result Entry window to enter or add the PHONC.  This is also useful to easily navigate to “Result Entry” window from within “Medical Validation”, even when a PHONC is not due for entry.
 
 Alt + R: From within “Medical Validation”, copies the episode number and navigates to Result Entry window.
 
-Ctrl + Alt + N / Ctrl + Alt + L - saves the episode number and the time in ChemHelp-directory\episode_log.txt
-
 Ctrl + Alt + C: Screen Captures (screenshots) the active window into ChemHelp-directory\Screenshots\
 
-Ctrl + Alt + P: From within “Medical Validation”, copies the episode number and navigates to Result Entry window to add a CCOM and put a standard comment with a link for Dr. to update details.
+Ctrl + Alt + P: From within “Medical Validation”, copies the episode number and navigates to Result Entry window to add a CCOM and put a standard comment with a link for clinician to update details on tinyurl.com/nhls-update.
 
 Shift + Alt + P: Enable Proxy (via Registry)
 
