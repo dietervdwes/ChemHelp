@@ -1,4 +1,4 @@
-;~ ;ChemHelp v.2.0 - updated 2022-02-04
+;~ ;ChemHelp v.2.0 - updated 2022-01-16
 ;Written by Dieter van der Westhuizen 2018-2022
 ;Inspired from TrakHelper by Chad Centner
 
@@ -35,6 +35,9 @@ Changes in v2.0 (coded from 2022-01-11)
 -Removed shortcut for Shift+Alt+R - escape works better.
 -Added shortcut to navigate to Results Entry - by using Ctrl+Alt+P - similar to Alt+P but without the "PHONC"-part.
 -Added HYPOA and INFLAMOLIGO comments for SPE reporting.
+-Added FAI comment
+-Added an AVS study template
+-Added Alt+V to work from Result Entry Single window.
 
 To-do in v2.1
 -https://www.autohotkey.com/board/topic/81915-solved-gui-control-tooltip-on-hover/ - to show hotkeys when hovering mouse over the app
@@ -1130,9 +1133,24 @@ sleep, 50
 Return
 }
 else
+IfWinActive, Result Entry - Single
 {
-return
+WinActivate, Result Entry - Single
+WinWaitActive, Result Entry - Single
+sleep, 200
+MouseClick, left, 904, 164, 1
+sleep, 500
+MouseClick, left, 19, 292, 1
+sleep, 500
+send, Transcription Verified.
+sleep, 50
+send, {altdown}o{altup}
+sleep, 50
+Return
 }
+else
+return
+
 
 ;;;;;;;;;;;;;;;;;;;                                                                             Alt+/ for Staff note in Med Val or Single: Transcription Verified 
 !/::
@@ -2080,7 +2098,7 @@ Return
 ::HYPOA::Hypoalbuminemia is present.
 ::PREV::The previously typed monoclonal Ig_ persists in _ gamma at _ g/L.  Immunoparesis is _.
 ::PROM::A prominent peak is present in the mid-gamma region measuring g/L. The remainder of the gamma region measures g/L (8-14 g/L).  Immunotyping will be performed. Please see results below, to follow.
-::SURINE::Please send urine (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) for Bence Jones protein electrophoresis and serum for free light chain analysis.
+::SURINE::Please send urine (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) for Bence Jones protein electrophoresis or serum for free light chain analysis.
 ::BGB::Beta-gamma bridging is present. This is consistent with a chronic inflammatory process associated with an IgA response.  Causes may include cirrhosis, and cutaneous or mucosal inflammation.
 ::SUSP::If the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended.
 ::SUSPPEAK::A suspicious peak is present in the _-gamma region measuring _ g/L. `nThe rest of the gamma region measures _ g/L (8-14 g/L).`nImmunofixation will be performed.  See result below, to follow. 
@@ -2145,6 +2163,50 @@ Signed
 Director: JL du Preez
 Test performed at a referral laboratory:
 South African Doping Control Laboratory - SADoCoL
+)
+
+::FAICOMMENT::
+(
+Note that the free androgen indices are unable to be calculated due to the upper / lower measuring limit of testosterone / SHBG, but if testosterone of 0.1 nmol/L were used for the calculation, the values below are applicable. The values of the free androgen indices below are likely thus likely an over/underestimation of the actual values.
+~BOLD
+Index                          Result            Reference range
+~NORMAL
+Calculated free testosterone   <0.001 L nmol/L     0.003 - 0.033
+% Free testosterone            <1.00 %              0.70 - 2.19
+Calc bioavailable testosterone <0.02 L nmol/L       0.06 - 0.76
+% Bioavailable testosterone    <20.0 %              15.3 - 47.7
+Free androgen index            <0.1 L                0.3 - 5.6
+)
+
+::AVSStudy::
+(
+~BOLD
+Sampling site       Time    Episode      Aldo   Cort   SI   ACR LI  
+~NORMAL
+PIVC2 suprarenal*   15h56   SA05467137   2350   2607        0.9     
+PIVC1 infrarenal*   15h55   SA05467134   3130   997     3.1     
+L adrenal**         15h52   SA05467129   129000 26360   14.6    4.9 2.1 
+L phrenoadrenal**   15h50   SA05467127   67500  6090    3.4 11.1    4.7 
+L renal*            15h33   SA05467126   16300  1060    0.6 15.4    6.6 
+R adrenal vein A    15h30   SA05467121   2170   989 0.5 2.2     
+R adrenal vein B    15h29   SA05467119   1870   749 0.4 2.5     
+Peripheral femoral  15h57   SA05467115   2150   951 0.5 2.3     
+Baseline IVC        14h26   SA05467110   610    95  0.1 6.4     
+~BOLD
+Glossary
+~NORMAL
+Aldo = Aldosterone in pmol/L
+Cort = Cortisol in nmol/L
+SI = Selectivity Index = Cortisol Adrenal vein : Cortisol Peripheral vein
+ACR = Aldosterone : Cortisol ratio
+LI = Lateralization Index = Dominant ACR : Non-dominant ACR
+PIVC = Peripheral (Inferior Vena Cava)
+L = Left
+R = Right
+* Aldosterone in dilution 1:10
+** Aldosterone in dilution 1:50
+Please note: It is recommended that AVS studies that are not bilaterally
+successful should not be used to establish lateralization.
 )
 
 ; Work in progress
