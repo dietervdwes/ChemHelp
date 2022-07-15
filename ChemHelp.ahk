@@ -35,15 +35,33 @@ Changes in v2.0 (coded from 2022-01-11)
 -Removed shortcut for Shift+Alt+R - escape works better.
 -Added shortcut to navigate to Results Entry - by using Ctrl+Alt+P - similar to Alt+P but without the "PHONC"-part.
 -Added HYPOA and INFLAMOLIGO comments for SPE reporting.
--Added FAI comment
--Added an AVS study template
--Added Alt+V to work from Result Entry Single window.
 
-To-do in v2.1
+Changes in v2.1 (coded from 2022-06-30)
+-Faster Episode and MRN number requisition (from F7 in Medical Validation window and episode number from Audit trail or title of the window when applicable). When applicable, these also do not rely on the copying to the clipboard. It reads the title of the window rather than clicking and copying.
+-Automatically click the close button when "Show all content" in Internet Explorer appears, since the https (SSL) EPR server upgrade - requires a new file, show_all_content.PNG in the trakcare_icons folder.
+-A fix or two in the Alt+N shortcut to copy the episode to the clipboard.
+-Tooltip now shows for 1 second with the saved MRN or episode when any of the functions run which uses it.
+-Error checking when opening / waiting for the episode or MRN acquisition windows.
+
+To-do in v2.2 and beyond
 -https://www.autohotkey.com/board/topic/81915-solved-gui-control-tooltip-on-hover/ - to show hotkeys when hovering mouse over the app
 -API which sends the size of VQ list over Telegram / Whatsapp (use tooltip scrape or an OCR program, such as command: C:\Program Files\Capture2Text_v4.6.0_64bit\Capture2Text>Capture2Text_CLI.exe --screen-rect "931 79 957 91" -o "C:\test.txt" --trim-capture --blacklist abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.! --scale-factor 2.5
--Ass uFix button & changed rFix to sFix.
+-Add uFix button & changed rFix to sFix.
 -Do something cool with OCR using Capture-2-text's CLI.
+
+Servers failed to copy:
+17
+32
+24
+29
+
+
+Servers copying fine:
+39
+15 x2
+2
+37
+
 
 
 */
@@ -97,11 +115,9 @@ Gui, Margin, 0, 0
 ;Gui -Caption -Border
 Gui, Show, x%width% y%height% w84
 
+ToolTip, ChemHelp (re)started...
+SetTimer, RemoveToolTip, -1000
 
-
-titleoffice = Microsoft Office Activation Wizard
-classoffice = NUIDialog
-settimer, office_activation_watch, 150
 ;The following part of initialisation reads a configuration file located at the user's "ChemHelp-directory", and saves the variables, 
 ;saved as comma separated values into the various variables below when the script is loaded.  
 FileRead, chemhelpsettingsraw, %A_ScriptDir%\chemhelp_settings.txt
@@ -130,7 +146,7 @@ if %A_Hour% = 17 ; 5 o clock french time
 }
 */
 
-
+/*
 ;                                                          Generic script to close a pop-up window.
 office_activation_watch:
 IfWinExist, %titleoffice% ahk_class %classoffice% 
@@ -145,6 +161,7 @@ settimer, office_activation_watch, off
 else
   tooltip    ; remove the tooltip
 return
+*/
 
 ;--                                                              Enabling and disapbling the proxy
 ;Write to the registry; set autoproxy to this value
@@ -166,6 +183,13 @@ else
 return
 
 ; inetcpl.cpl <- Run this command in Run prompt to set proxy settings
+
+
+/*
+RemoveToolTip:
+ToolTip
+return
+*/
 
 buttonVPN:
 run, "C:\Program Files\ShrewSoft\VPN Client\ipseca.exe"
@@ -203,10 +227,10 @@ settimer, win_proxy_logon, 500
 settimer, citrix_proxy_logon, 500
 settimer, miscellaneous_user_config_file_notice, 500
 
-url :="https://nhlslisapps.nhls.ac.za/Citrix/XenApp/auth/login.aspx"
+url :="https://lisctxstorefnt.nhls.ac.za/Citrix/StoreWeb/"
 run, %url%
-WinActivate, Citrix XenApp
-WinWaitActive, Citrix XenApp
+WinActivate, Citrix Workspace
+WinWaitActive, Citrix Workspace
 sleep, 2500
 send, %citrix_username%
 sleep, 500
@@ -215,8 +239,8 @@ sleep, 200
 send, %citrix_password%
 sleep, 300
 send, {Enter}
-WinWaitActive, Citrix XenApp - Applications - 
-WinWaitActive, Citrix XenApp - Applications - 
+WinWaitActive, Citrix Workspace
+WinWaitActive, Citrix Workspace
 sleep, 3000
 /*
 Loop %tabs_citrix%
@@ -364,7 +388,7 @@ return
 
 ;;;;;;;;;;;;;;;;;;;;;                                                                           CREF error C900 entered but test is registered on TrakCare   
 !y::
-EpResultSingle()
+txt:=EpResultSingle()
 sleep, 100
 FileAppend, CREF-error`n%txt%`n, C:\TrakCare-Errors\TrakCare-Entry-Errors.txt
 return
@@ -436,31 +460,36 @@ return
 !n::
 if WinActive("Medical Validation :   (Authorise By Episode)")
     {
-    EpMedVal()
+    episode := EpMedVal()
+    Clipboard := episode
     Return
     }
 else
     if WinActive("Result Entry - Single -")
     {
-    EpResultSingle()
+    episode:=EpResultSingle()
+    Clipboard := episode
     Return
     }
 else
     if WinActive("Result Verify - Single -")
     {
-    EpResultVerSingle()
+    episode:=EpResultVerSingle()
+    Clipboard := episode
     Return
     }
 else
     if WinActive("Result Entry - Verify")
     {
-        EpResEntrVer()
+        episode:=EpResEntrVer()
+        Clipboard := episode
         Return
     }
 else
     if WinActive("Result Entry (Total Count")
     {
-        EpResEntrTot()
+        episode:=EpResEntrTot()
+        Clipboard := episode
         Return
     }
 else
@@ -472,45 +501,48 @@ else
 log_episode:
 if WinActive("Medical Validation :   (Authorise By Episode)")
     {
-    EpMedVal()
-    LogEpisode()
+    episode := EpMedVal()
+    LogEpisode(episode)
     }
 else
     if WinActive("Result Entry - Single -")
     {
-    EpResultSingle()
-    LogEpisode()
+    episode := EpResultSingle()
+    LogEpisode(episode)
     }
 else
     if WinActive("Result Entry - Verify")
     {
     EpResEntrVer()
-    LogEpisode()
+    episode := Clipboard
+    LogEpisode(episode)
     }
 else
     if WinActive("Result Verify - Single -")
     {
     EpResultVerSingle()
-    LogEpisode()
+    episode := Clipboard
+    LogEpisode(episode)
     }
 else
     if WinActive("Result Entry (Total")
     {
     EpResEntrTot()
-    LogEpisode()
+    episode:= Clipboard
+    LogEpisode(episode)
     }
 else
     MsgBox,1,, No relevant TrakCare Window active.,3
     Return
 
-LogEpisode()
+LogEpisode(episode)
 {
     FormatTime, timevar , YYYYMMDDHH24MISS, yyyy-MM-dd HH:mm
-    FileAppend, %ClipBoard%`,%timevar%`n, %A_ScriptDir%\episode_log.txt
+    FileAppend, %episode%`,%timevar%`n, %A_ScriptDir%\episode_log.txt
     if ErrorLevel 
         MsgBox, Unable to write to file Documents\ChemHelp\episode_log.txt.  Make sure the directory exists in the "My Documents" folder.
     else
-        MsgBox, 1,,Episode %ClipBoard% logged at %timevar% `n at ChemHelp-directory\episode_log.txt,1.8
+        MsgBox, 1,,Episode %episode% logged at %timevar% `n at ChemHelp-directory\episode_log.txt,1.8
 }    
     
 ;-------------------------                                                                  Alt+P Enter PHONC
@@ -519,7 +551,7 @@ WinActivate, Medical Validation :   (Authorise By Episode)
 
 #IfWinActive, Medical Validation :   (Authorise By Episode)
 !p::
-EpMedVal()
+episode := EpMedVal()
 sleep, 200
 WinActivate Medical Validation :   (Authorise By Episode)
 sleep, 200
@@ -550,7 +582,7 @@ WinWaitActive, Result Entry, , Result Entry - Verifiy
 sleep, 200
 send, {AltDown}l{AltUp}
 sleep, 200
-send, {CtrlDown}v{CtrlUp}
+send, %episode%
 sleep, 200 ; changed down from 300
 send, {Enter}
 sleep, 150 ; changed down from 300
@@ -619,7 +651,7 @@ return
 
 #IfWinActive, Medical Validation :   (Authorise By Episode)
 ^!p::
-EpMedVal()
+episode := EpMedVal()
 sleep, 200
 WinActivate Medical Validation :   (Authorise By Episode)
 sleep, 200
@@ -650,7 +682,7 @@ WinWaitActive, Result Entry, , Result Entry - Verifiy
 sleep, 200
 send, {AltDown}l{AltUp}
 sleep, 200
-send, {CtrlDown}v{CtrlUp}
+send, %episode%
 sleep, 200 ; changed down from 300
 send, {Enter}
 sleep, 150 ; changed down from 300
@@ -665,7 +697,7 @@ return
 
 #IfWinActive, Medical Validation :   (Authorise By Episode)
 ^!r::
-EpMedVal()
+episode := EpMedVal()
 sleep, 100
 WinActivate Medical Validation :   (Authorise By Episode)
 sleep, 200
@@ -696,57 +728,11 @@ WinWaitActive, Result Entry, , Result Entry - Verifiy
 sleep, 150
 send, {AltDown}l{AltUp}
 sleep, 150
-send, {CtrlDown}v{CtrlUp}
+send, %episode%
 sleep, 200
 send, {Enter}
 sleep, 200
-/*
-MouseClick, Left, 340, 133, 2, 100
-sleep, 100
-Send, CCOM
-sleep, 100
-send, {Enter}
-sleep, 250
-IfWinExist, Search Unsuccessful
-{
-    MsgBox, 4,,  CCOM does not appear for this Episode. `nDo you want to add a CCOM to this episode?
-    IfMsgBox Yes
-    {
-        WinClose, Search Unsuccessful
-        sleep, 200
-        WinActivate, Result Entry, , Result Entry - Verify 
-        WinWaitActive, Result Entry, , Result Entry - Verify
-        sleep, 200
-        send, {AltDown}l{AltUp}
-        sleep, 400
-        send, {CtrlDown}v{CtrlUp}
-        sleep, 300
-        send, {Enter}
-        sleep, 300
-        MouseClick, Left, 215, 300
-        sleep, 200
-        send, {altdown}d{altup}
-        sleep, 200
-        send, s
-        sleep, 200
-        WinWaitActive, Test Set Maintenance
-        sleep, 200
-        send, CCOM
-        sleep, 200
-        send, {tab}
-        sleep, 100
-        send, {enter}
-        return
-    }
-    else IfMsgBox No
-    { 
-        sleep, 300
-        WinClose, Search Unsuccessful
-        Return 
-    }
-}
-else
-*/
+
 MouseClick, left, 70, 300, 1
 sleep, 200
 send, {altdown}d{altup}
@@ -851,17 +837,21 @@ url := "https://trakdb-prod.nhls.ac.za/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN
 run, %url%
 sleep, 800
 WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
+sleep, 300
+Remove_IE_notice()
 return
 }
     
 else IfWinActive, Medical Validation :   (Authorise By Episode)
 {
-MRNMedVal()
-txt := Clipboard
-url := "https://trakdb-prod.nhls.ac.za/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=" . txt
+mrn := MRNMedVal()
+;txt := Clipboard
+url := "https://trakdb-prod.nhls.ac.za/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=" . mrn
 run, %url%
 sleep, 800
 WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
+sleep, 300
+Remove_IE_notice()
 return
 }
 
@@ -873,6 +863,8 @@ url := "https://trakdb-prod.nhls.ac.za/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN
 run, %url%
 sleep, 800
 WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
+sleep, 300
+Remove_IE_notice()
 return
 }
 
@@ -884,6 +876,8 @@ else IfWinActive, Result Entry (Total
     run, %url%
     sleep, 800
     WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
+    sleep, 300
+    Remove_IE_notice()
     return
 }
 
@@ -895,6 +889,8 @@ else IfWinActive, Result Entry - Verify
     run, %url%
     sleep, 800
     WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
+    sleep, 300
+    Remove_IE_notice()
     return
 }
 
@@ -916,10 +912,10 @@ sleep, 200
 ;sleep, 300
 IfWinActive, Medical Validation :   (Authorise By Episode)
 {
-EpMedVal()
-txt := ClipBoard
-sleep, 100
-url := "http://" . equation_ip . "/multipdfsearch.php?file=" . txt . ""
+episode:=EpMedVal()
+;txt := ClipBoard
+;sleep, 100
+url := "http://" . equation_ip . "/multipdfsearch.php?file=" . episode . ""
 run, %url%
 sleep, 1500
 WinMove, Internet Explorer ahk_class IEFrame,, A_ScreenWidth-537, 0, 545, A_ScreenHeight-25
@@ -928,10 +924,10 @@ Return
 else
 IfWinActive,  Result Entry - Single - 
 {
-EpResultSingle()
+episode := EpResultSingle()
 txt := ClipBoard
-sleep, 100
-url := "http://" . equation_ip . "/multipdfsearch.php?file=" . txt . ""
+;sleep, 100
+url := "http://" . equation_ip . "/multipdfsearch.php?file=" . episode . ""
 run, %url%
 sleep, 1500
 WinMove, Internet Explorer ahk_class IEFrame,, A_ScreenWidth-537, 0, 545, A_ScreenHeight-25
@@ -940,9 +936,9 @@ Return
 else
 IfWinActive, Result Verify - Single -
 {
-EpResultVerSingle()
+episode := EpResultVerSingle()
 txt := ClipBoard
-url := "http://" . equation_ip . "/multipdfsearch.php?file=" . txt . ""
+url := "http://" . equation_ip . "/multipdfsearch.php?file=" . episode . ""
 run, %url%
 sleep, 1500
 WinMove, Internet Explorer ahk_class IEFrame,, A_ScreenWidth-537, 0, 545, A_ScreenHeight-25
@@ -951,9 +947,8 @@ Return
 else
 IfWinActive, Result Entry - Verify
     {
-        EpResEntrVer()
-        txt := ClipBoard
-        url := "http://" . equation_ip . "/multipdfsearch.php?file=" . txt . ""
+        episode:=EpResEntrVer()
+        url := "http://" . equation_ip . "/multipdfsearch.php?file=" . episode . ""
         run, %url%
         sleep, 1500
         WinMove, Internet Explorer ahk_class IEFrame,, A_ScreenWidth-537, 0, 545, A_ScreenHeight-25
@@ -1058,35 +1053,35 @@ send, {AltDown}{Escape}{AltUp}
     send, s
     sleep, 300
     WinActivate, Test Set Maintenance
-    sleep, 100
+    sleep, 300
     MouseClick, Left, 830, 308 
-    sleep, 100
+    sleep, 300
     send, IFE
-    sleep, 200
+    sleep, 300
     send, {tab down}{tab up}
     send, {enter}
-    sleep, 300
+    sleep, 700
     WinClose, Test Set Maintenance
-    sleep, 800
+    sleep, 1000
     send, {Alt}
-    sleep, 400
+    sleep, 700
     send, 2
-    sleep, 400
+    sleep, 700
     send, n
-    sleep, 500
+    sleep, 700
     send, {AltDown}1{AltUp}
-    sleep, 300
+    sleep, 700
     send, f
-    sleep, 300
+    sleep, 700
     WinWaitActive, Refer To Verification Queue
     WinActivate, Refer To Verification Queue
-    sleep, 300
+    sleep, 700
     MouseClick, Left, 429, 111
-    sleep, 500
+    sleep, 700
     MouseClick, Left, 429, 165
-    sleep, 500
+    sleep, 700
     send, {AltDown}o{AltUp}
-    sleep, 500
+    sleep, 700
     WinClose, Result Entry - Single
     return
 #IfWinActive
@@ -1242,9 +1237,13 @@ Return
 !z::
    If WinActive("Result Entry - Single - ")
    {
-   mouseclick, left, 78,  209, 1
+   mouseclick, left, 598, 214, 1
    sleep, 50
-   send, {PgDn down}{PgDn up}
+   send, Y
+   sleep, 100
+   MouseClick, left, 254, 511
+   sleep, 50
+   send, {F6}
    sleep, 150
    Return
    }
@@ -1351,6 +1350,13 @@ Return
 Return
 #IfWinActive
 
+;                                                                                                              Alt+` to type username and password
+!`:: 
+ send, %citrix_username%
+ send,{tab}
+ send, %citrix_password%
+ send,{Enter}
+ Return
 
 
 ;                                                                                              Mouse Wheel Actions in Verify   UP and DOWN SCROLL
@@ -1579,29 +1585,30 @@ return
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;                       This section defines the different FUNCTIONS 
+
 EpMedVal()
 {
 WinActivate, Medical Validation :   (Authorise By Episode)
 WinWaitActive, Medical Validation :   (Authorise By Episode)
-sleep, 100 ; changed this from 250 (2022-01-12)
-send, {altdown}i{altup}
-sleep, 100 ; changed this down from 200
-send, c
-sleep, 50 ;changed this down from 100
-WinActivate, Clinical History
-WinWaitactive, Clinical History
-sleep, 100 ; changed this down from 100
-MouseClick, left, 122, 75, 2, 100
-clipboard=
-sleep, 100 ;changed down from 100
-send, ^c
-ClipWait
-sleep, 100
-txt := Clipboard
-sleep, 100 ; changed this down from 100
-WinClose, Clinical History
-WinWaitClose, Clinical History
-sleep, 50
+
+send, {altdown}te{altup}
+send, {Enter}
+sleep, 200
+WinWaitActive, Visit Events
+if ErrorLevel
+    MsgBox, Visit Events window could not be found.
+else
+sleep,50
+WinGetTitle, Title, A
+;MsgBox, The active window is "%Title%".
+rawarray := StrSplit(Title , "-", " " )
+episode := rawarray[2]
+;MsgBox, The mrn is "%episode%".
+WinClose, %Title%
+WinWaitClose, %Title%
+ToolTip, %episode%
+SetTimer, RemoveToolTip, -2000
+return episode
 }
 
 
@@ -1634,78 +1641,56 @@ EpResEntrVer()
 {
 WinActivate, Result Entry - Verify
 WinWaitActive, Result Entry - Verify
-sleep, 100 ; changed this from 250 (2022-01-12)
-send, {altdown}i{altup}
-sleep, 100 ; changed this down from 200
-send, c{Enter}
-sleep, 50 ;changed this down from 100
-WinActivate, Clinical History
-WinWaitactive, Clinical History
-sleep, 100 ; changed this down from 100
-MouseClick, left, 122, 75, 2, 100
-clipboard=
-sleep, 100 ;changed down from 100
-send, ^c
-ClipWait
-sleep, 100
-txt := Clipboard
-sleep, 100 ; changed this down from 100
-WinClose, Clinical History
-WinWaitClose, Clinical History
-sleep, 50
+send, {altdown}tt{altup}
+send, {Enter}
+send, s
+sleep, 200
+WinWaitActive, Visit Events
+if ErrorLevel
+{
+    MsgBox, Visit Events window could not be found.
+    return
+}
+else 
+sleep,50
+WinGetTitle, Title, A
+;MsgBox, The active window is "%Title%".
+rawarray := StrSplit(Title , "-", " " )
+episode := rawarray[2]
+;MsgBox, The mrn is "%episode%".
+WinClose, %Title%
+WinWaitClose, %Title%
+ToolTip, %episode%
+SetTimer, RemoveToolTip, -1500
+return episode
 }
 
 EpResultSingle()
 {
-  WinActivate, Result Entry - Single -
+WinActivate, Result Entry - Single -
 WinWaitActive, Result Entry - Single -
-sleep, 200
-send, {AltDown}3{AltUp}
-sleep, 500
-;send, 3
-sleep, 300
-send, c
-sleep, 100
-WinActivate, Clinical History
-WinWaitactive, Clinical History
-sleep, 50
-mouseclick, left, 122, 75, 2, 100
-clipboard=
-sleep, 100
-send, ^c
-ClipWait
-sleep, 100
-txt := Clipboard
-sleep, 50
-WinClose, Clinical History
-WinWaitClose, Clinical History
-sleep, 50
+WinGetTitle, Title, A
+;MsgBox, The active window is "%Title%".
+rawarray := StrSplit(Title , "-", " " )
+episode := rawarray[3]
+;MsgBox, The mrn is "%episode%".
+ToolTip, %episode%
+SetTimer, RemoveToolTip, -1500
+return episode
 }
 
 EpResultVerSingle()
 {
-    WinActivate, Result Verify - Single - 
-WinWaitActive, Result Verify - Single - 
-sleep, 50
-send, {AltDown}3{AltUp}
-sleep, 300
-send, c
-sleep, 100
-WinActivate, Clinical History
-WinWaitActive, Clinical History
-sleep, 50
-mouseclick, left, 93, 75, 2, 100
-sleep, 50
-clipboard=
-sleep, 100
-send, ^c
-ClipWait
-sleep, 100
-txt := Clipboard
-sleep, 50
-WinClose, Clinical History
-WinWaitClose, Clinical History
-sleep, 50
+WinActivate, Result Verify - Single -
+WinWaitActive, Result Verify - Single -
+WinGetTitle, Title, A
+;MsgBox, The active window is "%Title%".
+rawarray := StrSplit(Title , "-", " " )
+episode := rawarray[3]
+;MsgBox, The mrn is "%episode%".
+ToolTip, %episode%
+SetTimer, RemoveToolTip, -1500
+return episode
 }
 
 MRNSingle()
@@ -1733,42 +1718,42 @@ txt := Clipboard
 sleep, 100 ; changed from 200
 WinClose, Patient History
 WinWaitClose, Patient History
+ToolTip, %Clipboard%
+SetTimer, RemoveToolTip, -1500
 sleep, 50
 }
 
-
 MRNMedVal()
 {
-    sleep, 200 ;changed down from 500
-send, {altdown}i{altup}
-sleep, 200 ; changed down from 500
-send, {enter}
-sleep, 50 ; changed down from 200
-WinActivate, Patient History
-WinWaitactive, Patient History
-sleep, 50 ; changed down from 300
-mouseclick, left, 93, 75, 2, 100
-sleep, 50
-clipboard=
-sleep, 100 ; changed down from 100
-send, ^c
-ClipWait
-sleep, 50 ; changed down from 200
-txt := Clipboard
-sleep, 50 ; changed down from 200
-WinClose, Patient History
-WinWaitClose, Patient History
-sleep, 50
+mouseclick, left, 433,  231, 1
+sleep,150
+send, {F7}
+WinWaitActive, Test Item Results
+if ErrorLevel
+    MsgBox, "Test Item Results" window could not be found.
+else
+sleep,150
+WinGetTitle, Title, A
+;MsgBox, The active window is "%Title%".
+rawarray := StrSplit(Title , "-", " " )
+mrn := rawarray[2]
+;MsgBox, The mrn is "%mrn%".
+WinClose, %Title%
+WinWaitClose, %Title%
+ToolTip, %mrn%
+SetTimer, RemoveToolTip, -1500
+return mrn
 }
 
 MRNResultVerSingle()
 {
-    sleep, 500
-send, {AltDown}
-sleep, 100
-send, 3{AltUp}
+WinActivate, Result Verify - Single - 
+WinWaitActive, Result Verify - Single - 
+sleep, 200
+send, {Altdown}3
 sleep, 300
 send, {enter}
+send, {Altup}
 sleep, 200
 WinActivate, Patient History
 WinWaitactive, Patient History
@@ -1776,7 +1761,7 @@ sleep, 300
 mouseclick, left, 93, 75, 2, 100
 sleep, 50
 clipboard=
-sleep, 100
+sleep, 200
 send, ^c
 ClipWait
 sleep, 200
@@ -1784,6 +1769,8 @@ txt := Clipboard
 sleep, 200
 WinClose, Patient History
 WinWaitClose, Patient History
+ToolTip, %Clipboard%
+SetTimer, RemoveToolTip, -1500
 sleep, 50
 }
 
@@ -1808,6 +1795,8 @@ txt := Clipboard
 sleep, 50 ; changed down from 200
 WinClose, Patient History
 WinWaitClose, Patient History
+ToolTip, %Clipboard%
+SetTimer, RemoveToolTip, -1500
 sleep, 50
 }
 
@@ -1832,7 +1821,26 @@ txt := Clipboard
 sleep, 50 ; changed down from 200
 WinClose, Patient History
 WinWaitClose, Patient History
+ToolTip, %Clipboard%
+SetTimer, RemoveToolTip, -1500
 sleep, 50
+}
+
+Remove_IE_notice() {
+    sleep, 200
+    ImageSearch, FoundX, FoundY, 700,700, 1300, 900, %A_ScriptDir%\trakcare_icons\show_all_content.png
+if (ErrorLevel = 2)
+    ;MsgBox Could not conduct the search for show_all_content notice. Possibly the file show_all_content.png is missing in ChemHelp\trakcare_icons folder.
+    return
+else if (ErrorLevel = 1)
+    return
+    ;MsgBox Show_all_content could not be found on the screen.
+else
+    ;MsgBox The icon was found at %FoundX%x%FoundY%.
+    FoundX += 142
+    FoundY += 15
+    MouseClick, Left, %FoundX%, %FoundY%,
+    sleep, 500
 }
 
 ;---------------------------------------------------------- Script to Loop Extraction by pre-defined Extracting Criteria with a pre-formatted configuration CSV.
@@ -1879,9 +1887,8 @@ return
     
 else IfWinActive, Medical Validation :   (Authorise By Episode)
 {
-MRNMedVal()
-txt := Clipboard
-run node %A_ScriptDir%\SavePatientEPR.js %txt%
+mrn := MRNMedVal()
+run node %A_ScriptDir%\SavePatientEPR.js %mrn%
 ;Make sure Node.js is installed and that the SavePatientEPRs.js file, the node_modules folder, package.json and package-lock.json is present in "My Documents" folder.
 if (ErrorLevel != 0)
     MsgBox There was an error, likely Node is not installed.
@@ -1907,6 +1914,7 @@ sleep, 200
 return
 }
 Return
+
 
 
 ButtonEx:
@@ -2108,13 +2116,13 @@ Return
 ::A-1::The alpha-1 peak is biphasic, suggesting alpha-1-antitrypsin heterozygosity.
 ::IMMFIX::Immunofixation will be performed.  See result below, to follow.
 ::HYPOG::Hypogammaglobulinemia is present at _ g/L (8-14 g/L).`nImmunofixation will be performed. See results below, to follow.
+::POLYG::Polyclonal hypergammaglobulinemia is present at _ g/L (normal 8-14 g/L).
 ::ARRCOM::Unable to calculate the aldosterone:renin ratio due to the upper / lower measuring limit of aldosterone / renin, but the ratio is </> _.
 ::CSFELEC::
 (
 CSF electrophoresis:
 Samples with high total protein concentrations (>16.8 g/L) will not be run due to the increased likelihood of false negative results.
 )
-::POLYG::Polyclonal hypergammaglobulinemia is present at
 ::CLINCONT::Clinician contact details may not be coded in our database.  Please go to the link below to update clinician contact details:`ntinyurl.com/nhls-update
 ::text1::
 (
@@ -2306,7 +2314,7 @@ return
 
 MoreScript01:
         Gui, Submit
-		url := "http://" . equation_ip . "/multipdfsearch.php?file=" . txt . ""
+		url := "http://" . equation_ip . "/multipdfsearch.php?file=" . Episode . ""
 		run, %url%
 		sleep, 1500
 		WinMove, Internet Explorer ahk_class IEFrame,, A_ScreenWidth-537, 0, 545, A_ScreenHeight-25
