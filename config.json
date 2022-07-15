@@ -1,0 +1,14 @@
+{
+    "webviewusername": "Webviewusername",
+    "webviewpassword": "WebviewPassword",
+    "nhlsusername":"nhls.username",
+    "nhlspassword":"nhls.password",
+    "url": "https://trakcarelabwebview.nhls.ac.za/trakcarelab/csp/system.Home.cls#/Component/SSUser.Logon",
+    "FoldernumbersCSV" : "./foldernumbers.csv",
+    "CSVFileNameMRNs" : "./AllMRNsToBeScraped.csv",
+    "CSVFileNameEpisodes" : "./AllEpisodesToBeScraped.csv",
+    "WriteRawFile" : "./rawwritefile.csv",
+    "FinalXLSX" : "./scrapedMRNs-AKI.xlsx",
+    "HST_XLSX" : "./HSTScrapedData.xlsx"
+    
+  }
