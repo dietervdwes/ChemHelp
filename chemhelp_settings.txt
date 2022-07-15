@@ -1,1 +1,2 @@
-citrix.user,citrix.password,trakcare.user,trakcarepassword,19
+dieter.vdwesthuizen,Play155%,diederick.vdwesthuizen,Play100%,Dr Dieter v.d. Westhuizen,19,172.22.4.40,
+172.22.4.40 (GSH); 172.22.8.50 (RXH); 172.22.12.40 (TBH); 172.22.16.63 (?Green Point Lab)
