@@ -65,7 +65,7 @@ Alt + R: From within “Medical Validation”, copies the episode number and nav
 
 Ctrl + Alt + C: Screen Captures (screenshots) the active window into ChemHelp-directory\Screenshots\
 
-Ctrl + Alt + P: From within “Medical Validation”, copies the episode number and navigates to Result Entry window to add a CCOM and put a standard comment with a link for clinician to update details on tinyurl.com/nhls-update.
+Ctrl + Alt + P: From within “Medical Validation”, uses the episode number and navigates to Result Entry window. 
 
 Shift + Alt + P: Enable Proxy (via Registry)
 
@@ -105,7 +105,8 @@ The source code can be seen by right-clicking on ChemHelp and opening with a Tex
 Mouse scroll wheel has been setup to work in some windows.
 
 # Hotstrings
-Note that this list can be edited by editing ChemHelp.ahk with a text editor and entering your own text in a similar format.  Follow this format: https://www.autohotkey.com/docs/Hotstrings.htm
+This list of strings can be typed followed by a space after which the full comment will be entered.
+Note that this list can be edited by editing ChemHelp.ahk with a text editor and entering your own text in a similar format.  Follow these instructions for more information: https://www.autohotkey.com/docs/Hotstrings.htm
 
 `::INFLAM::The alpha-1, -2 and beta-2 (complement) regions are elevated and there is a polyclonal hypergammaglobulinaemia at  g/L (8 - 14 g/L). No monoclonal peaks are visible. This pattern suggests an inflammatory process.  If the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended.
 
@@ -166,12 +167,9 @@ In version 1.11 I have updated to add a VPN button which should open the Shrewso
 ChemHelp was originally developed for use at Groote Schuur Hospital Chemical Pathology, but most functions should also be useable by other laboratories within the NHLS.
 Most functions, eg. the Form button (or Ctrl + F), can be adapted to work at other laboratories with their respective file- / pdf servers, such as the ECM. Currently the IP address of the Equation file server should be entered into the chemhelp_settings.txt file. 172.22.4.40 (GSH), 172.22.8.50 (RXH), 172.22.12.40 (TBH), 172.22.16.63 (?Green Point Lab)
 The ECM and interaction with it has not yet been configured, as we do not use the ECM server in the Western Cape.
-I am however keen to visit another lab (or have a Zoom session) to learn how this works and try to implement it to work on this system as well.
+This is relatively easy to implement for the ECM server as well - contact me if needed.
 
 The EPR to Excel Function must be coded to extract Free Text (F6) comments too.  This is quite a task which will likely take some time and planning to complete one day.
-
-ChemHelp-Chrome.ahk was a work in progress to open the scanned forms as well as the EPR in Chrome browser rather than the default Internet Explorer.  I am not working on this now anymore, as Internet Explorer seems to be working fine.
-
 
 # Feedback
 Please remember to give feedback as an error can be resolved and may only lead to improvement: dieter.vdwesthuizen@nhls.ac.za 
