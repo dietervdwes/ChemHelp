@@ -1285,6 +1285,14 @@ Return
    sleep, 500
    Return
    }
+   If WinActive("Result Verify - Single - ")
+   {
+   send, {altdown}<{altup}
+    sleep, 80
+   send, {Enter}
+   sleep, 150
+   Return
+   }
    Else
    {
    MsgBox, No TrakCare Window selected.
@@ -1306,6 +1314,14 @@ Return
    {
    send, {altdown}>{altup}
    sleep, 500
+   Return
+   }
+    If WinActive("Result Verify - Single - ")
+   {
+   send, {altdown}>{altup}
+    sleep, 80
+   send, {Enter}
+   sleep, 150
    Return
    }
    Else
