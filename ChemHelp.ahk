@@ -43,7 +43,15 @@ Changes in v2.1 (coded from 2022-06-30)
 -Tooltip now shows for 1 second with the saved MRN or episode when any of the functions run which uses it.
 -Error checking when opening / waiting for the episode or MRN acquisition windows.
 
-To-do in v2.2 and beyond
+Changes in v2.2 (coded from 2023-02-07)
+-Custom EPR url as defined in 8th variable (comma separated) in the chemhelp_settings file's first line (after the equation_ip).
+-Login procedure fixing.
+-Changes FPSA button's wait for window Test Set Maintenance (sleep)
+-Changes FPSA button after TrakCare patch 01/2024
+-Alt+Q and Alt+Z now also pages the EPR in Google Chrome or Edge
+
+
+To-do in v2.3 and beyond
 -https://www.autohotkey.com/board/topic/81915-solved-gui-control-tooltip-on-hover/ - to show hotkeys when hovering mouse over the app
 -API which sends the size of VQ list over Telegram / Whatsapp (use tooltip scrape or an OCR program, such as command: C:\Program Files\Capture2Text_v4.6.0_64bit\Capture2Text>Capture2Text_CLI.exe --screen-rect "931 79 957 91" -o "C:\test.txt" --trim-capture --blacklist abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.! --scale-factor 2.5
 -Add uFix button & changed rFix to sFix.
@@ -106,7 +114,7 @@ Gui, Add, button, x60 y152 w20 h20, _t
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;   Set Window Options   ;;;;;;;;;;;;;;
 ;Gui, +AlwaysOnTop
 Gui, -sysmenu +AlwaysOnTop
-Gui, Show, , ChemHelp2.1
+Gui, Show, , ChemHelp2.2
 WinGetPos,,,,TrayHeight,ahk_class Shell_TrayWnd,,,
 height := A_ScreenHeight-400
 width := A_ScreenWidth-98
@@ -132,6 +140,7 @@ trakcare_password := settingsarray[4]
 full_name := settingsarray[5]
 tabs_citrix := settingsarray[6]
 equation_ip := settingsarray[7]
+epr_url := settingsarray[8]
 return
 
 /*
@@ -226,16 +235,21 @@ ButtonLog-on:
 settimer, win_proxy_logon, 500
 settimer, citrix_proxy_logon, 500
 settimer, miscellaneous_user_config_file_notice, 500
+settimer, citrix_receiver_security_warning, 500
 
 url :="https://lisctxstorefnt.nhls.ac.za/Citrix/StoreWeb/"
 run, %url%
 WinActivate, Citrix Workspace
 WinWaitActive, Citrix Workspace
 sleep, 2500
+send, {CtrlDown}a{CtrlUp}
+send, {Delete}
 send, %citrix_username%
 sleep, 500
 send, {TAB down}{TAB up}
 sleep, 200
+send, {CtrlDown}a{CtrlUp}
+send, {Delete}
 send, %citrix_password%
 sleep, 300
 send, {Enter}
@@ -343,14 +357,14 @@ else
     return
 
 labtrakstart_login:
-IfWinExist,  (Current Site : NHLS)
+IfWinExist,   (Current Site : ) - \\Remote
 {
     settimer, labtrakstart_login, Off
     settimer, win_proxy_logon, Off
     ;settimer, citrix_proxy_logon, Off
     settimer, miscellaneous_user_config_file_notice, Off
-    WinActivate,  (Current Site : NHLS)
-    WinWaitActive,  (Current Site : NHLS)
+    WinActivate,   (Current Site : ) - \\Remote
+    WinWaitActive,   (Current Site : ) - \\Remote
     sleep, 200
     send, %trakcare_username%    
     sleep, 500
@@ -360,15 +374,6 @@ IfWinExist,  (Current Site : NHLS)
 
 sleep, 1000
 return
-;Loop, %trakcare_workarea_tabs%
-;{
-;send, {TAB down}{TAB up}
-;sleep, 500
-;}
-;send, {Down}
-;sleep, 200
-;send, {Enter}
-;Return
 }
 else
   tooltip Waiting for TrakCare Window
@@ -385,6 +390,20 @@ WinWaitActive, LabTrakStart
 }
 else
 return
+
+;Citrix Receiver - Security Warning checking
+citrix_receiver_security_warning:
+IfWinExist, Citrix Receiver - Security Warning
+{
+    settimer, citrix_receiver_security_warning, Off
+    WinActivate, Citrix Receiver - Security Warning
+    WinWaitActive, Citrix Receiver - Security Warning
+    sleep, 100
+    MouseClick, Left, 175, 200
+    Return
+}
+Else
+Return
 
 ;;;;;;;;;;;;;;;;;;;;;                                                                           CREF error C900 entered but test is registered on TrakCare   
 !y::
@@ -833,7 +852,7 @@ IfWinActive, Result Entry - Single -
 {
 MRNSingle()
 txt := Clipboard
-url := "https://trakdb-prod.nhls.ac.za/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=" . txt
+url := epr_url . txt
 run, %url%
 sleep, 800
 WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
@@ -846,7 +865,7 @@ else IfWinActive, Medical Validation :   (Authorise By Episode)
 {
 mrn := MRNMedVal()
 ;txt := Clipboard
-url := "https://trakdb-prod.nhls.ac.za/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=" . mrn
+url := epr_url . mrn
 run, %url%
 sleep, 800
 WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
@@ -859,7 +878,7 @@ else IfWinActive, Result Verify - Single -
 {
 MRNResultVerSingle()
 txt := Clipboard
-url := "https://trakdb-prod.nhls.ac.za/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=" . txt
+url := epr_url . txt
 run, %url%
 sleep, 800
 WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
@@ -872,7 +891,7 @@ else IfWinActive, Result Entry (Total
 {
     MRNResultEntTotal()
     txt := Clipboard
-    url := "https://trakdb-prod.nhls.ac.za/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=" . txt
+    url := epr_url . txt
     run, %url%
     sleep, 800
     WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
@@ -885,7 +904,7 @@ else IfWinActive, Result Entry - Verify
 {
     MRNResultEntVer()
     txt := Clipboard
-    url := "https://trakdb-prod.nhls.ac.za/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=" . txt
+    url := epr_url . txt
     run, %url%
     sleep, 800
     WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
@@ -982,16 +1001,17 @@ return
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;                                          Button FPSA 
 ButtonFPSA:
 ^!f::
+sleep, 200
 WinActivate, Medical Validation :   (Authorise By Episode)
 WinWaitActive, Medical Validation :   (Authorise By Episode)
 sleep, 200
 send, {altdown}d{altup}
 sleep, 200
 send, s
-sleep, 1000
+sleep, 300
 WinActivate, Test Set Maintenance
 WinWaitActive, Test Set Maintenance
-sleep, 500
+sleep, 300
 ImageSearch, FoundX, FoundY, 15,86, 523, 379, %A_ScriptDir%\trakcare_icons\cdum.png
 if (ErrorLevel = 2)
     MsgBox Could not conduct the search for CDUM. Possibly the file cdum.png is missing in ChemHelp\trakcare_icons folder.
@@ -1005,8 +1025,8 @@ else
 sleep, 300
 WinActivate, Test Set Maintenance
 sleep, 100
-MouseClick, Left, 830, 308 
-sleep, 100
+MouseClick, Left, 844, 290 
+sleep, 200
 send, FPSA
 sleep, 200
 send, {tab down}{tab up}
@@ -1018,6 +1038,7 @@ Return
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;                                          Button dCDUM
 ButtondCDUM:
 ^!d::
+sleep, 200
 WinActivate, Medical Validation :   (Authorise By Episode)
 WinWaitActive, Medical Validation :   (Authorise By Episode)
 sleep, 200
@@ -1229,9 +1250,15 @@ Return
    sleep, 150
    Return
    }
+    If WinActive("HST - Web Results")
+   {
+    mouseClick, left, 40, 160, 1
+    send, {PgUp down}{PgUp up}
+    return
+    }
    Else
    {
-   send, {PgUp}
+   send, {PgUp down}{PgUp up}
     Return
    }
 !z::
@@ -1262,9 +1289,15 @@ Return
    sleep, 150
    Return
    }
+   If WinActive("HST - Web Results")
+   {
+    mouseClick, left, 40, 160, 1
+    send, {PgDn down}{PgDn up}
+    return
+    }
    Else
    {
-   send, {PgDn}
+   send, {PgDn down}{PgDn up}
     Return
    }
 
@@ -2017,7 +2050,7 @@ Loop, read, %A_ScriptDir%\extract_list.csv, ;output_list.txt ; output_list.txt i
   sleep, 1000
   ;send, {Tab} ;Uncomment this tab if above user site is present.
   sleep, 500
-  loop, 6
+  loop, 5
     {
         send, {Tab}
         sleep, 200
@@ -2115,10 +2148,11 @@ Return
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;                                                                   SPE canned text 
 
-::INFLAM::The alpha-1, alpha-2 and beta-2 (complement) regions are elevated. The gamma region measures  g/L (8 - 14 g/L). `n`No monoclonal peaks are visible. This pattern suggests an inflammatory process.  `nIf the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended.
-::INFLAMP::The alpha-1, alpha-2 and beta-2 (complement) regions are elevated and there is a polyclonal hypergammaglobulinaemia at  g/L (8 - 14 g/L). `nNo monoclonal peaks are visible. This pattern suggests a chronic inflammatory process.  `nIf the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended.
-::INFLAMS::The alpha-1, -2 and beta-2 (complement) region is elevated and the gamma region measures  g/L (8 - 14 g/L). `nNo monoclonal peaks are visible. This pattern suggests an inflammatory process.  `nIf the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended.
+::INFLAM::The alpha-1, alpha-2 and beta-2 (complement) regions are elevated. The gamma region measures  g/L (8 - 14 g/L). `n`No monoclonal peaks are visible. This pattern suggests an inflammatory process.  `nPlease note the combination of serum protein electrophoresis and serum free light chains is recommended for multiple myeloma screening.
+::INFLAMP::The alpha-1, alpha-2 and beta-2 (complement) regions are elevated and there is a polyclonal hypergammaglobulinaemia at  g/L (8 - 14 g/L). `nNo monoclonal peaks are visible. This pattern suggests a chronic inflammatory process.  `nPlease note the combination of serum protein electrophoresis and serum free light chains is recommended for multiple myeloma screening.
+::INFLAMS::The alpha-1, -2 and beta-2 (complement) region is elevated and the gamma region measures  g/L (8 - 14 g/L). `nNo monoclonal peaks are visible. This pattern suggests an inflammatory process.  `nIf the clinical suspicion of myeloma remains, serum free light chain analysis is recommended.
 ::INFLAMOLIGO::Hypoalbuminemia is present.`nThe alpha-1, alpha-2 and beta-2 (complement) regions are elevated and there is hypergammaglobulinemia of _ g/L (8-14 g/L).`nMultiple irregularities (all <1 g/L) are present in the gamma region on the background polyclonal hypergammaglobulinemia.  This pattern suggests a chronic inflammatory process with an oligoclonal response.`nSerum free light chain analysis is recommended, if clinically indicated.`nRepeat serum protein electrophoresis is recommended in 3-6 months or when the inflammatory condition has subsided.
+::RECOMSCR::Please note the combination of serum protein electrophoresis and serum free light chains is recommended for multiple myeloma screening.`nUrine protein electrophoresis (Bence Jones proteins) only adds value when screening for AL amyloidosis.
 ::HYPOA::Hypoalbuminemia is present.
 ::PREV::The previously typed monoclonal Ig_ persists in _ gamma at _ g/L.  Immunoparesis is _.
 ::PROM::A prominent peak is present in the mid-gamma region measuring g/L. The remainder of the gamma region measures g/L (8-14 g/L).  Immunotyping will be performed. Please see results below, to follow.
@@ -2127,13 +2161,29 @@ Return
 ::SUSP::If the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended.
 ::SUSPPEAK::A suspicious peak is present in the _-gamma region measuring _ g/L. `nThe rest of the gamma region measures _ g/L (8-14 g/L).`nImmunofixation will be performed.  See result below, to follow. 
 ::REPEATSPE::Repeat serum protein electrophoresis is recommended in 3-6 months or when the inflammatory condition has subsided.
-::NORMP::Normal protein electrophoresis pattern.  No monoclonal peaks are visible. The gamma region measures _ g/L (8-14 g/L). `nIf the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended.
+::NORMP::Normal protein electrophoresis pattern.  No monoclonal peaks are visible. The gamma region measures _ g/L (8-14 g/L). `nIf the clinical suspicion of myeloma remains, serum free light chain analysis are recommended.
 ::NEPHR::Hypoalbuminaemia is present.  The alpha-2 (macroglobulin) region is significantly increased at _ g/L (5-9 g/L).  The gamma region measures _ g/L (8-14 g/L). No monoclonal peaks are visible. `nThis pattern suggests nephrotic syndrome. If the clinical suspicion of myeloma remains, urine Bence Jones protein electrophoresis (at least 20ml urine in a container with sodium azide preservative obtainable from the lab) or serum free light chain analysis are recommended. 
 ::A-1::The alpha-1 peak is biphasic, suggesting alpha-1-antitrypsin heterozygosity.
 ::IMMFIX::Immunofixation will be performed.  See result below, to follow.
 ::HYPOG::Hypogammaglobulinemia is present at _ g/L (8-14 g/L).`nImmunofixation will be performed. See results below, to follow.
 ::POLYG::Polyclonal hypergammaglobulinemia is present at _ g/L (normal 8-14 g/L).
 ::ARRCOM::Unable to calculate the aldosterone:renin ratio due to the upper / lower measuring limit of aldosterone / renin, but the ratio is </> _.
+::ALDORENIN::
+(
+An EDTA sample was not received at this laboratory (Groote Schuur NHLS) for determination of the Aldosterone:Renin ratio. 
+
+Careful standardization of the patient preparation and sampling conditions is strongly recommended. It is recommended that the patient be seated for 15 minutes before the blood is drawn for aldosterone and renin and record time of day and position of patient (supine, seated or upright). 
+
+Instructions for Renin measurement:
+Renin is measured from plasma from an EDTA (Purple top tube).  Do not refrigerate due to the risk of cryoactivation of prorenin. Fasting specimens are recommended but not required. Separate plasma from cells ASAP (i.e. send to laboratory ASAP). The laboratory should deep freeze separated plasma samples (-20 deg. C or below) for transportation or that are not for immediate analysis.
+
+Instructions for Aldosterone measurement:
+Aldosterone is measured from serum from an SST (Yellow top tube). Samples are stable for 5 days at 2 to 8 deg. C and 4 weeks at -20 deg. C.
+)
+::ALDOSCREEN::
+(
+To screen for primary aldosteronism, simultaneous measurement of aldosterone and renin is recommended to determine the aldosterone-to-renin ratio. Aldosterone measurement requires a separate serum sample (yellow top) and renin requires a separate EDTA plasma sample (purple top tube). Appropriate patient preparation is also necessary for valid results. Recommend repeat.
+)
 ::CSFELEC::
 (
 CSF electrophoresis:
@@ -2338,7 +2388,7 @@ MoreScript01:
 		
 MoreScript02:
         Gui, Submit
-		url := "https://trakdb-prod.nhls.ac.za/csp/reporting/epr.csp?PAGE=4&vstRID=*&MRN=" . Episode . ""
+		url := epr_url . Episode . ""
 		run, %url%
 		sleep, 800
 		WinMove, Internet Explorer ahk_class IEFrame,, 0, 0, A_ScreenWidth-0, A_ScreenHeight-25
